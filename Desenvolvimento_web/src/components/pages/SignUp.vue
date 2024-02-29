@@ -10,9 +10,16 @@
             
             <h3>Senha</h3>
             <BaseInput class="input"></BaseInput>
-            
-            <!-- <p>{{ displayText }}</p> -->
-            <Button  intent="secondary" @click="updateText">Update</Button>
+
+            <div class="flex-row">
+              <label class="container">
+                          <input type="checkbox">
+                          <span class="checkmark"></span>
+                          Lembre-se de mim
+                        </label>
+                        <a href="#">esqueceu a senha?</a>
+            </div>
+            <Button  intent="primary" @click="updateText">Entrar</Button>
             </div>
         </TemplateRegister>
   </template>
@@ -53,7 +60,17 @@
 h1, p{
     text-align: center;
     font-family: "Inter", sans-serif;
-
+  }
+  h1{
+    font-size: 50px;
+    font-weight: bolder;
+  }
+  p{
+  font-size: 18px;
+}
+h3{
+  margin-bottom: -1rem;
+  font-weight: bold;
 }
     .content{
         display: flex;
@@ -62,9 +79,17 @@ h1, p{
         flex-direction: column;
     }
     .input{
-        /* width: 486px; */
+        width: 486px;
         font-family: "Inter", sans-serif;
 
     }
+
+    .flex-row{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+
 </style>
   

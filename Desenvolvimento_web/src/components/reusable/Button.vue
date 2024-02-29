@@ -25,7 +25,7 @@
         return cva('', {
           variants: {
             intent: {
-              primary: 'default',
+              primary: 'default primary',
               secondary: 'default secondary',
               danger: 'default danger',
               gray: 'default',
@@ -45,11 +45,15 @@
   
   <style scoped>
   .default{
-      padding: 0.5rem 1rem;
+      padding: 1rem;
       border-radius: 0.5rem;
       border-color: transparent;
       font-size: 20px;
 
+  }
+  .primary{
+    background-color: #006494;
+    color: #fff;
   }
   .secondary {
     background-color: rgb(0, 179, 179);
@@ -63,6 +67,11 @@
   .disabled {
     background-color: rgb(128, 128, 128) !important;
     cursor: not-allowed;
+  }
+
+  a{
+    color: black;
+    text-decoration: none;
   }
   </style>
   
