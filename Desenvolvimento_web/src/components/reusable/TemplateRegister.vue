@@ -32,9 +32,11 @@
         width: 100vw;
         gap: 0;
     }
-    .content-img{
-        width: 50%;
-    }
+    .content-img {
+    width: 50%;
+    overflow: hidden; /* Add this line to hide any overflow */
+}
+
     .content-img img{
         object-fit: cover;
         width: 100%;
@@ -47,5 +49,19 @@
         align-items: center;
         justify-content: center;
     }
+    @media screen and (max-width: 860px) {
+  .container {
+    flex-direction: column; /* Stack content in a column on smaller screens */
+    justify-content: center;
+  }
+
+  .content-img {
+    display: none; /* Hide the image on smaller screens */
+  }
+
+  .content-txt {
+    width: 100%; /* Make the text content full width on smaller screens */
+  }
+}
 </style>
   

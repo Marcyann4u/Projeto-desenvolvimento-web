@@ -45,11 +45,18 @@
   
   <style scoped>
   .default{
+    cursor: pointer;
+
+      filter: drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.25));
       padding: 1rem;
       border-radius: 0.5rem;
       border-color: transparent;
       font-size: 20px;
-
+      opacity: 1;
+transition: opacity 1s ease 0s;
+  }
+  .default:hover{
+    opacity: 0.65;  
   }
   .primary{
     background-color: #006494;

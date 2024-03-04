@@ -9,7 +9,7 @@ export default{
 </script>
 
 <template>
-  <SignUp></SignUp>
+      <router-view></router-view>
 </template>
 
 <style>
