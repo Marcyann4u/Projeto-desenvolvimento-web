@@ -33,7 +33,7 @@
   import TemplateRegister from '../reusable/TemplateRegister.vue'
   
   export default {
-  name: 'SignUp',
+  name: 'ResetPassword',
   components: {
   BaseInput,
   Button,

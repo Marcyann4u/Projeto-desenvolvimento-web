@@ -1,6 +1,9 @@
 <template>
     <button :class="buttonClass" :disabled="disabled">
+      
+      
       <slot></slot>
+      <img v-if="close" src="../imgs/61155.png">
     </button>
   </template>
   
@@ -10,9 +13,13 @@
   
   export default {
     props: {
+      close: {
+        type: Boolean,
+        default: false,
+      },
       intent: {
         type: String,
-        validator: (val) => ['primary', 'secondary', 'danger', 'gray'].includes(val),
+        validator: (val) => ['primary', 'secondary', 'danger', 'gray', 'close', 'primaryModal', 'secondaryModal', 'dangerModal'].includes(val),
         default: 'secondary',
       },
       disabled: {
@@ -29,6 +36,12 @@
               secondary: 'default secondary',
               danger: 'default danger',
               gray: 'default',
+              close: 'default close',
+              primaryModal: 'default primary modalstyle',
+              secondaryModal: 'default secondary modalstyle',
+              dangerModal: 'default danger modalstyle',
+              grayModal: 'default modalstyle',
+
             },
             disabled: {
               true: 'disabled',
@@ -46,29 +59,36 @@
   <style scoped>
   .default{
     cursor: pointer;
-
-      filter: drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.25));
-      padding: 1rem;
-      border-radius: 0.5rem;
-      border-color: transparent;
-      font-size: 20px;
-      opacity: 1;
-transition: opacity 1s ease 0s;
+    filter: drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.25));
+    padding: 1rem 1rem;
+    border-radius: 0.2rem;
+    border-color: transparent;
+    font-size: 20px;
+    opacity: 1;
+    transition: opacity 1s ease 0s;
   }
   .default:hover{
     opacity: 0.65;  
+  }
+  .modalstyle{
+    font-size: 16px;
+    padding: 0.5rem 1rem;
+    align-self: flex-start;
   }
   .primary{
     background-color: #006494;
     color: #fff;
   }
   .secondary {
-    background-color: rgb(0, 179, 179);
+    background-color: #1B98E0;
     color: #fff;
   }
   .danger{
     background-color: rgb(216, 18, 18);
     color: #fff;
+  }
+  .gray{
+    background-color: #959595;
   }
   
   .disabled {
@@ -80,5 +100,14 @@ transition: opacity 1s ease 0s;
     color: black;
     text-decoration: none;
   }
+  .close{
+    padding: 0;
+    filter: drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.25));
+    background-color: transparent;
+  }
+  img{
+    width: 16px;
+  }
+
   </style>
   

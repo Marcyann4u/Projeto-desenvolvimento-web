@@ -26,7 +26,7 @@ import Button from '../reusable/Button.vue'
 import TemplateRegister from '../reusable/TemplateRegister.vue'
 
 export default {
-name: 'SignUp',
+name: 'ForgotPassword',
 components: {
 BaseInput,
 Button,

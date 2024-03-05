@@ -31,28 +31,37 @@
   import { ref } from 'vue';
   import BaseInput from '../reusable/BaseInput.vue';
   import Button from '../reusable/Button.vue'
-  import TemplateRegister from '../reusable/TemplateRegister.vue'
+  import TemplateRegister from '../reusable/TemplateRegister.vue';
+  import Modal from  '../reusable/Modal.vue';
 
   export default {
-    name: 'SignUp',
-    components: {
-      BaseInput,
-      Button,
-      TemplateRegister,
-    },
-    data() {
-      return {
-        firstName: ref(''),
-        displayText: '', // Add a new property for displaying text
-      };
-    },
-    methods: {
-      updateText() {
-        // Update the displayText when the button is clicked
-        this.displayText = this.firstName;
-      },
-    },
-  };
+  name: 'SignUp',
+  components: {
+    BaseInput,
+    Button,
+    TemplateRegister,
+    Modal,
+  },
+  setup() {
+    const popupTriggers = ref({
+      buttonTrigger: false,
+    });
+
+    const firstName = ref('');
+    const displayText = ref('');
+
+    const updateText = () => {
+      displayText.value = firstName.value;
+    };
+
+    return {
+      popupTriggers,
+      firstName,
+      displayText,
+      updateText,
+    };
+  },
+};
   </script>
 
 <style scoped>
