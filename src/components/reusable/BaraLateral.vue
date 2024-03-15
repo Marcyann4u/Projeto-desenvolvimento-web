@@ -1,76 +1,95 @@
 <!-- TemplateRegister.vue -->
 <template>
-    <main class="container">
+  <main class="container">
+    <div class="lateral">
+      <img src="../../assets/mdi_box-check.png" alt="Logo">
+      <ul>
+        <li>Nome da empresa</li>
+        <li>Nome do usuário</li>
+        <li>Email@empresa.com</li>
+        <li><a href="#">Colaboradores</a></li>
+        <li><a href="#">Trocar senha</a></li>
+      </ul>
 
-        <div class="lateral">
-            <img src="" alt="Logo">
-            <ul>
-                <p>Nome</p>
-                <p>Nome</p>
-                <p>Nome</p>
-                <p>Nome</p>
-                <p>Nome</p>
-            </ul>
-        </div>
-        <div class="content-txt">
-            <slot></slot>
-        </div>
-    </main>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      src: String,
+      <BotaoSair></BotaoSair>
+    </div>
+    <div class="content-txt">
+      <slot></slot>
+    </div>
+  </main>
+</template>
+
+<script>
+import BotaoSair from '../reusable/BotaoSair.vue';
+export default {
+  components: {
+    BotaoSair
+  },
+  props: {
+    src: String,
+  },
+  methods: {
+    handleError() {
+      console.error('Error loading image:', this.src);
+      // You can implement additional error handling logic here
     },
-    methods: {
-      handleError() {
-        console.error('Error loading image:', this.src);
-        // You can implement additional error handling logic here
-      },
-    },
-  };
-  </script>
-  
-  <style scoped>
-    .container{
-        display: flex;
-        height: 100vh;
-        width: 100vw;
-        gap: 0;
-        background-color: #E8F1F2;
-    }
-    .lateral {
-    background-color: #247BA0;
-    width: 25%;
-    overflow: hidden; /* Add this line to hide any overflow */
+  },
+};
+</script>
+
+<style scoped>
+* {
+  background-color: #247BA0;
 }
 
-    .lateral img{
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-    }
-    .content-txt{
-        width: 50%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    @media screen and (max-width: 860px) {
-  .container {
-    flex-direction: column; /* Stack content in a column on smaller screens */
-    justify-content: center;
+.container{
+  height: 100vh;
+  max-height: 100%;
+}
+
+.lateral {
+  height: 100%;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.lateral img {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 10px;
+}
+
+.lateral>ul {
+  color: #fff;
+  font-size: 18px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 200px;
+  text-align: left;
+}
+
+.lateral a {
+  padding: 0;
+  color: #fff;
+  transition: all .4s ease-out;
+}
+
+.lateral a:hover {
+  background-color: transparent;
+  border-bottom: 1px solid #48c6fc;
+}
+
+@media screen and (max-width: 860px) {
+  *{
+    background-color: red;
   }
 
-  .lateral {
-    display: none; /* Hide the image on smaller screens */
-  }
 
-  .content-txt {
-    width: 100%; /* Make the text content full width on smaller screens */
-  }
 }
 </style>
-  

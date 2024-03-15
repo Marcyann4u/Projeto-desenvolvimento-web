@@ -23,7 +23,7 @@
 import { ref } from 'vue';
 import BaseInput from '../reusable/BaseInput.vue';
 import Button from '../reusable/Button.vue'
-import TemplateRegister from '../reusable/TemplateRegister.vue'
+import TemplateRegister from '../reusable/TemplateRegister.vue';
 
 export default {
 name: 'ForgotPassword',
