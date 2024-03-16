@@ -2,22 +2,20 @@
 <template>
     <div class="template__produtos__container">
         <div class="template__produtos__container--header">
-
             <div class="informacoes">
                 <h1>Lista de Produtos</h1>
-                <p>17 produtos cadastrados</p>
+                <p v-if="produtos.length > 0">Exibindo {{ produtos.length }} produtos</p>
             </div>
 
             <div class="perfil">
                 <a href="">
                     <img class="profileCover" src="../../assets/aiony-haust-3TLl_97HNJo-unsplash.jpg" alt="" srcset="">
                 </a>
-
             </div>
         </div>
 
         <div class="template__produtos__container--filter">
-            <input type="text" placeholder="Nome ou código">
+            <input type="text" placeholder="Nome ou código" v-model="filtro">
             <font-awesome-icon :icon="['fas', 'search']" class="icon-lupa" />
 
             <div class="filter">
@@ -45,43 +43,104 @@
             </thead>
 
             <tbody>
-                <tr>
-                    <td>123456</td>
-                    <td>Batata Frita</td>
-                    <td>Comida</td>
-                    <td>Texto qualquer</td>
-                    <td>R$12,70</td>
-                    <td>45</td>
+                <tr v-for="produto in produtos" :key="produto.id">
+                    <td>{{ produto.codigo }}</td>
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ produto.categoria }}</td>
+                    <td>{{ produto.descricao }}</td>
+                    <td>R${{ produto.preco }}</td>
+                    <td>{{ produto.estoque }}</td>
                     <td class="botoes-estoque">
-                        <button><font-awesome-icon :icon="['fas', 'plus']" class="icon-decre-incre" /></button>
-                        <button><font-awesome-icon :icon="['fas', 'minus']" class="icon-decre-incre" /></button>
-                        <button><font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" /></button>
-                        <button><font-awesome-icon :icon="['fas', 'edit']" class="icon-decre-incre" /></button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>789012</td>
-                    <td>Macarrão</td>
-                    <td>Comida</td>
-                    <td>Texto qualquer</td>
-                    <td>R$6,78</td>
-                    <td>26</td>
-                    <td class="botoes-estoque">
-                        <button><font-awesome-icon :icon="['fas', 'plus']" class="icon-decre-incre" /></button>
-                        <button><font-awesome-icon :icon="['fas', 'minus']" class="icon-decre-incre" /></button>
-                        <button><font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" /></button>
+                        <button @click="acrescentar(produto)">
+                            <font-awesome-icon :icon="['fas', 'plus']" class="icon-decre-incre" />
+                        </button>
+                        <button @click="decrementar(produto)">
+                            <font-awesome-icon :icon="['fas', 'minus']" class="icon-decre-incre" />
+                        </button>
+                        <button @click="deletarProduto(produto.id)">
+                            <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
+                        </button>
                         <button><font-awesome-icon :icon="['fas', 'edit']" class="icon-decre-incre" /></button>
                     </td>
                 </tr>
             </tbody>
         </table>
+
+        <div v-if="!produtos.length">
+            <p>Nenhum produto encontrado.</p>
+        </div>
     </div>
 </template>
 
 <script>
+import { ref } from 'vue';
 export default {
-    name: 'TemplateProdutos'
+    name: 'TemplateProdutos',
+    setup() {
+        const produtos = ref([
+            {
+                id: 1,
+                codigo: "123456",
+                nome: "Batata Frita",
+                categoria: "Comida",
+                descricao: "Batatas fritas crocantes e douradas, temperadas com sal e especiarias.",
+                preco: 12.70,
+                estoque: 45,
+            },
+            {
+                id: 2,
+                codigo: "789012",
+                nome: "Macarrão",
+                categoria: "Comida",
+                descricao: "Macarrão tipo espaguete com molho de tomate caseiro.",
+                preco: 6.78,
+                estoque: 26,
+            },
+            {
+                id: 3,
+                codigo: "345678",
+                nome: "Pizza",
+                categoria: "Comida",
+                descricao: "Pizza de mussarela com tomate e orégano.",
+                preco: 25.00,
+                estoque: 15,
+            },
+            {
+                id: 4,
+                codigo: "901234",
+                nome: "Refrigerante",
+                categoria: "Bebida",
+                descricao: "Refrigerante de cola 2L.",
+                preco: 5.00,
+                estoque: 50,
+            },
+        ]);
+
+        const deletarProduto = (id) => {
+            produtos.value = produtos.value.filter(produto => produto.id !== id);
+        };
+
+        const acrescentar = (produto) => {
+            produto.estoque++;
+        };
+
+        const decrementar = (produto) => {
+            if(produto.estoque > 0){
+                produto.estoque--;
+            }
+            else{
+                produto.estoque = 0;
+            }
+        };
+
+        return {
+            produtos, // Make sure to return the produtos ref
+            filtro: '', // Optional filter string
+            deletarProduto,
+            acrescentar,
+            decrementar
+        };
+    }
 }
 </script>
 

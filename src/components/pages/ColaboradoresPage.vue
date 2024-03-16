@@ -1,6 +1,5 @@
 <template>
-  <BaraLateral src="https://saclogistica.com.br/wp-content/uploads/2022/07/Almoxarifado-930x620.png"></BaraLateral>
-  <TemplateProdutos></TemplateProdutos>
+  
 </template>
 
 <script>
@@ -13,10 +12,7 @@ import TemplateProdutos from '../reusable/TemplateProdutos.vue'
 export default {
 name: 'ForgotPassword',
 components: {
-BaseInput,
-Button,
-BaraLateral,
-TemplateProdutos,
+
 },
 data() {
 return {
@@ -26,7 +22,6 @@ return {
 },
 methods: {
 updateText() {
-  // Update the displayText when the button is clicked
   this.displayText = this.firstName;
 },
 },

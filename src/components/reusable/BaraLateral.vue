@@ -4,9 +4,9 @@
     <div class="lateral">
       <img src="../../assets/mdi_box-check.png" alt="Logo">
       <ul>
-        <li>Nome da empresa</li>
-        <li>Nome do usuário</li>
-        <li>Email@empresa.com</li>
+        <li>{{ usuario.empresa }}</li>
+        <li>{{ usuario.nome }}</li>
+        <li>{{ usuario.email }}</li>
         <li><a href="#">Colaboradores</a></li>
         <li><a href="#">Trocar senha</a></li>
       </ul>
@@ -22,6 +22,15 @@
 <script>
 import BotaoSair from '../reusable/BotaoSair.vue';
 export default {
+  setup(){
+    return {
+      usuario: {
+        empresa: 'Loja do Programador',
+        nome: 'Luana Paes',
+        email: 'estoque@loja.com',
+      },
+    };
+  },
   components: {
     BotaoSair
   },
@@ -40,15 +49,15 @@ export default {
 <style scoped>
 * {
   background-color: #247BA0;
+  height: auto;
 }
 
 .container{
-  height: 100vh;
-  max-height: 100%;
+  height: 100%;
 }
 
 .lateral {
-  height: 100%;
+  height: 100vh;
   width: 350px;
   display: flex;
   flex-direction: column;
