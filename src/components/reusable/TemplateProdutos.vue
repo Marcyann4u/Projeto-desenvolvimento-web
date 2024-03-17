@@ -23,7 +23,7 @@
                 <p>Filtro</p>
             </div>
 
-            <button class="add-produto">
+            <button class="add-produto" @click="addProduto()">
                 <font-awesome-icon :icon="['fas', 'plus']" class="icon-mais" />
                 Produto
             </button>
@@ -116,6 +116,28 @@ export default {
             },
         ]);
 
+        const addProduto = () =>{
+            const  id = prompt("Id do produto");
+            const  codigo = prompt("Código do produto");
+            const  nome = prompt("Nome do produto");
+            const  categoria = prompt("Categoria do produto");
+            const descricao = prompt("Descrição do produto")
+            const  preco = prompt("Preço do produto");
+            const  estoque = prompt("Quantidade do produto em estoque:");
+
+            const produto = {
+                id: id,
+                codigo: codigo,
+                nome: nome,
+                categoria: categoria,
+                descricao: descricao,
+                preco, preco,
+                estoque: estoque
+            }
+
+            produtos.value.push(produto)
+        }
+
         const deletarProduto = (id) => {
             produtos.value = produtos.value.filter(produto => produto.id !== id);
         };
@@ -138,7 +160,8 @@ export default {
             filtro: '', // Optional filter string
             deletarProduto,
             acrescentar,
-            decrementar
+            decrementar,
+            addProduto
         };
     }
 }
