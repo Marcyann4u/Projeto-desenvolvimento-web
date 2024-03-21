@@ -5,24 +5,26 @@
         <h1>Login</h1>
         <p>Digite seu e-mail e senha para acessar sua conta</p>
       </div>
-      <div class="form-style">
-        <h3>E-mail</h3>
-        <BaseInput class="input" v-model="firstName"></BaseInput>
-      </div>
-      <div class="form-style">
-        <h3>Senha</h3>
-        <BaseInput class="input" type="password" v-model="password"></BaseInput>
-      </div>
+      <form @submit.prevent="loginUser">
+        <div class="form-style">
+          <h3>E-mail</h3>
+          <BaseInput class="input" v-model="firstName"></BaseInput>
+        </div>
+        <div class="form-style">
+          <h3>Senha</h3>
+          <BaseInput class="input" type="password" v-model="password"></BaseInput>
+        </div>
 
-      <div class="flex-row">
-        <label class="container">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          Lembre-se de mim
-        </label>
-        <a><router-link to="/forgotpassword">Esqueceu sua senha?</router-link></a>
-      </div>
-      <Button intent="primary" @click="registerUser">Entrar</Button>
+        <div class="flex-row">
+          <label class="container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+            Lembre-se de mim
+          </label>
+          <a><router-link to="/forgotpassword">Esqueceu sua senha?</router-link></a>
+        </div>
+        <Button intent="primary">Entrar</Button>
+      </form>
     </div>
   </TemplateRegister>
 </template>
@@ -73,6 +75,7 @@ import BaseInput from '../reusable/BaseInput.vue';
 import Button from '../reusable/Button.vue';
 import TemplateRegister from '../reusable/TemplateRegister.vue';
 import Modal from '../reusable/Modal.vue';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'SignUp',
@@ -86,29 +89,29 @@ export default {
     const firstName = ref('');
     const password = ref('');
 
-    const registerUser = async () => {
+    const loginUser = async () => {
       try {
         const response = await axios.post('http://127.0.0.1:8000/login/', {
           email: firstName.value,
           password: password.value,
         })
 
-        if (response.data.success) {
-          // this.$router.push('/produtos')
+        if (response.status === 200) {
+          // router.push('/produtos')
           console.log("passou")
         } else {
           console.log("não acessou.");
           console.log(password.value, firstName.value)
         }
       } catch (error) {
-        console.error(error.response.data);
+        console.error(error);
       }
     };
 
     return {
       firstName,
       password,
-      registerUser,
+      loginUser,
     };
   },
 };
@@ -117,7 +120,7 @@ export default {
 <style scoped>
 * {
   font-family: "Inter", sans-serif;
-
+  background-color: #fff;
 }
 
 .txt {
