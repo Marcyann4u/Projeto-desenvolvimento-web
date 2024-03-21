@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <nav class="barra-lateral__content">
+        <nav class="barra-lateral__content" id="barra-lateral">
             <div class="barra-lateral__content--logo">
                 <img src="../../assets/mdi_box-check.png" alt="">
             </div>
@@ -32,7 +32,7 @@
             <div class="header">
                 <div class="header--informacoes">
                     <div class="hidden">
-                        <button onclick="abrirLateral()">abrir</button>
+                        <button onclick="abrirBotao()" id="btn-lateral">abrir</button>
                     </div>
 
                     <h1>Lista de Produtos</h1>
@@ -93,7 +93,17 @@
     </div>
 
     <script>
-        console.log("ok")
+        let barraLateral = document.getElementById('barra-lateral');
+        console.log(barraLateral)
+
+        function abrirBotao(){
+            if(barraLateral.style.display == 'none'){
+                barraLateral.style.display = 'flex';
+            }
+            else{
+                barraLateral.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
