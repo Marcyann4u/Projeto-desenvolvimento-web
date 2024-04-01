@@ -7,6 +7,8 @@ import Example from './components/popups/Editar.vue';
 import ColaboradoresPage from './components/pages/ColaboradoresPage.vue';
 import ProdutosPage from './components/pages/ProdutosPage.vue';
 
+
+
 const routes = [
   { path: '/', component: SignUp },
   { path: '/forgotpassword', component: ForgotPassword },

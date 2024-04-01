@@ -75,7 +75,7 @@ import BaseInput from '../reusable/BaseInput.vue';
 import Button from '../reusable/Button.vue';
 import TemplateRegister from '../reusable/TemplateRegister.vue';
 import Modal from '../reusable/Modal.vue';
-import { useRouter } from 'vue-router';
+// import { router } from '@/router';
 
 export default {
   name: 'SignUp',
@@ -90,6 +90,7 @@ export default {
     const password = ref('');
 
     const loginUser = async () => {
+      
       try {
         const response = await axios.post('http://127.0.0.1:8000/login/', {
           email: firstName.value,
@@ -97,7 +98,8 @@ export default {
         })
 
         if (response.status === 200) {
-          // router.push('/produtos')
+          console.log(password.value, firstName.value)
+          window.location = '/produtospage'
           console.log("passou")
         } else {
           console.log("não acessou.");
