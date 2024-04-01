@@ -2,6 +2,7 @@
   <TemplateRegister src="https://www.pleion.com.br/blog/wp-content/uploads/shutterstock_397306489.jpg">
     <div class="content">
       <div class="txt">
+        <span class="error-msg" id="error-msg">Email ou senha inválidos</span>
         <h1>Login</h1>
         <p>Digite seu e-mail e senha para acessar sua conta</p>
       </div>
@@ -90,7 +91,7 @@ export default {
     const password = ref('');
 
     const loginUser = async () => {
-      
+
       try {
         const response = await axios.post('http://127.0.0.1:8000/login/', {
           email: firstName.value,
@@ -103,10 +104,14 @@ export default {
           console.log("passou")
         } else {
           console.log("não acessou.");
-          console.log(password.value, firstName.value)
         }
       } catch (error) {
-        console.error(error);
+        console.error(error, 'erro vindo do backend');
+        document.getElementById('error-msg').style.display = 'block';
+        setTimeout(() => {
+          // Recarrega a página após 3 segundos
+          window.location.reload();
+        }, 2000);
       }
     };
 
@@ -123,6 +128,13 @@ export default {
 * {
   font-family: "Inter", sans-serif;
   background-color: #fff;
+}
+
+.error-msg {
+  background-color: rgb(237, 63, 63);
+  display: none;
+  color: #fff;
+  padding: 5px;
 }
 
 .txt {
