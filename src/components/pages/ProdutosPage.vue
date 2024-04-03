@@ -10,8 +10,14 @@
                     <li>Loja do Programador</li>
                     <li>Luana Paes</li>
                     <li>estoque@loja.com</li>
-                    <li><a href="#">Colaboradores</a></li>
-                    <li><a href="#">Trocar senha</a></li>
+                    <li>
+                        <routerLink to="/resetpassword">Trocar senha</routerLink>
+                    </li>
+                    <li>
+                        <routerLink to="/colaboradorespage">Colaboradores</routerLink>
+                    </li>
+                    <!-- <li><a href="">Colaboradores</a></li>
+                    <li><a href="./ResetPassword.vue">Trocar senha</a></li> -->
                 </ul>
             </div>
 
@@ -30,7 +36,7 @@
                     </div>
 
                     <h1>Lista de Produtos</h1>
-                    <p>Exibindo 4 produtos</p>
+                    <p v-if="produtos.length > 0">Exibindo {{ produtos.length }} produtos</p>
                 </div>
 
                 <div class="header--perfil">
@@ -189,6 +195,7 @@ export default {
             }
         }
 
+
         return {
             produtos, // Make sure to return the produtos ref
             filtro: '', // Optional filter string
@@ -196,7 +203,7 @@ export default {
             acrescentar,
             decrementar,
             addProduto,
-            abrirBotao
+            abrirBotao,
         };
     },
     components: {
