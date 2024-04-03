@@ -1,80 +1,83 @@
 <template>
   <div class="container">
-      <nav class="barra-lateral__content" id="barra-lateral">
-          <div class="barra-lateral__content--logo">
-              <img src="../../assets/mdi_box-check.png" alt="">
+    <nav class="barra-lateral__content" id="barra-lateral">
+      <div class="barra-lateral__content--logo">
+        <img src="../../assets/mdi_box-check.png" alt="">
+      </div>
+
+      <div class="barra-lateral__content--links">
+        <ul>
+          <li>Loja do Programador</li>
+          <li>Luana Paes</li>
+          <li>estoque@loja.com</li>
+          <li>
+            <routerLink to="/resetpassword">Trocar senha</routerLink>
+          </li>
+          <!-- <li><a href="">Colaboradores</a></li>
+                    <li><a href="./ResetPassword.vue">Trocar senha</a></li> -->
+        </ul>
+      </div>
+
+      <div class="barra-lateral__content--button-sair">
+        <button class="botao-sair" id="">Sair</button>
+      </div>
+    </nav>
+
+    <main>
+      <div class="header">
+        <div class="header--informacoes">
+          <div class="hidden">
+            <button @click="abrirBotao" id="btn-lateral">
+              <font-awesome-icon :icon="['fas', 'bars']" />
+            </button>
           </div>
 
-          <div class="barra-lateral__content--links">
-              <ul>
-                  <li>Nome da empresa</li>
-                  <li>Ruan Guedes</li>
-                  <li>estoque@loja.com</li>
-                  <li><a href="#">Colaboradores</a></li>
-                  <li><a href="#">Trocar senha</a></li>
-              </ul>
-          </div>
+          <h1>Lista de Colaboradores</h1>
+          <p class="colab">Exibindo {{ colaboradores.length }} colaboradores</p>
+        </div>
 
-          <div class="barra-lateral__content--button-sair">
-              <button class="botao-sair" id="">Sair</button>
-          </div>
-      </nav>
+        <div class="header--perfil">
+          <a href="#">
+            <img src="../../assets/aiony-haust-3TLl_97HNJo-unsplash.jpg" alt="foto de perfil do usuário">
+          </a>
+        </div>
+      </div>
 
-      <main>
-          <div class="header">
-              <div class="header--informacoes">
-                  <div class="hidden">
-                      <button @click="abrirBotao" id="btn-lateral">
-                          <font-awesome-icon :icon="['fas', 'bars']" />
-                      </button>
-                  </div>
+      <div class="filtro__pesquisa">
+        <input type="text" placeholder="nome ou código">
 
-                  <h1>Lista de Colaboradores</h1>
-                  <p class="colab">Exibindo {{ colaboradores.length }} colaboradores</p>
-              </div>
+        <p>Filtro</p>
 
-              <div class="header--perfil">
-                  <a href="#">
-                      <img src="../../assets/aiony-haust-3TLl_97HNJo-unsplash.jpg" alt="foto de perfil do usuário">
-                  </a>
-              </div>
-          </div>
+        <button @click="addColaborador()">
+          <font-awesome-icon :icon="['fas', 'plus']" class="icon-mais" /> Cadastrar
+        </button>
+      </div>
 
-          <div class="filtro__pesquisa">
-              <input type="text" placeholder="nome ou código">
 
-              <p>Filtro</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Função</th>
+          </tr>
+        </thead>
 
-              <button @click="addColaborador()">
-                  <font-awesome-icon :icon="['fas', 'plus']" class="icon-mais" /> Cadastrar
+        <tbody>
+          <tr v-for="colaborador in colaboradores" :key="colaborador.id">
+            <td>{{ colaborador.nome }}</td>
+            <td>{{ colaborador.email }}</td>
+            <td class="hidden-table">{{ colaborador.funcao }}</td>
+            <td class="botoes-estoque hidden-table">
+              <button @click="deletarColaborador(colaborador.id)">
+                <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
               </button>
-          </div>
-
-
-          <table>
-              <thead>
-                  <tr>
-                      <th>Nome</th>
-                      <th>E-mail</th>
-                      <th>Função</th>
-                  </tr>
-              </thead>
-
-              <tbody>
-                  <tr v-for="colaborador in colaboradores" :key="colaborador.id">
-                      <td>{{ colaborador.nome }}</td>
-                      <td>{{ colaborador.email }}</td>
-                      <td class="hidden-table">{{ colaborador.funcao }}</td>
-                      <td class="botoes-estoque hidden-table">
-                          <button @click="deletarColaborador(colaborador.id)">
-                              <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
-                          </button>
-                          <button><font-awesome-icon :icon="['fas', 'edit']" class="icon-decre-incre" /></button>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-      </main>
+              <button><font-awesome-icon :icon="['fas', 'edit']" class="icon-decre-incre" /></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
   </div>
 </template>
 
