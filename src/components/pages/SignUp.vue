@@ -100,6 +100,7 @@ export default {
 
         if (response.status === 200) {
           console.log(password.value, firstName.value)
+          console.log(response)
           window.location = '/produtospage'
           console.log("passou")
         } else {
