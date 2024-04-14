@@ -11,10 +11,11 @@
           <li>Luana Paes</li>
           <li>estoque@loja.com</li>
           <li>
+            <routerLink to="/produtospage">Produtos</routerLink>
+          </li>
+          <li>
             <routerLink to="/resetpassword">Trocar senha</routerLink>
           </li>
-          <!-- <li><a href="">Colaboradores</a></li>
-                    <li><a href="./ResetPassword.vue">Trocar senha</a></li> -->
         </ul>
       </div>
 
