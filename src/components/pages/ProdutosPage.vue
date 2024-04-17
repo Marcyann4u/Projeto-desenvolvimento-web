@@ -86,7 +86,7 @@
                             <button @click="decrementar(produto)">
                                 <font-awesome-icon :icon="['fas', 'minus']" class="icon-decre-incre" />
                             </button>
-                            <button @click="deletarProduto(produto.id)">
+                            <button @click="deleteProduto(produto.id)">
                                 <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
                             </button>
                             <button><font-awesome-icon :icon="['fas', 'edit']" class="icon-decre-incre" /></button>
@@ -99,6 +99,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { ref } from 'vue';
 import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateProdutos from '../reusable/TemplateProdutos.vue'
@@ -106,47 +107,7 @@ import TemplateProdutos from '../reusable/TemplateProdutos.vue'
 export default {
     name: 'ForgotPassword',
     setup() {
-        const produtos = ref([
-            {
-                id: 1,
-                codigo: "123456",
-                nome: "Batata Frita",
-                categoria: "Comida",
-                descricao: "Batatas fritas crocantes e douradas, temperadas com sal e especiarias.",
-                preco: 12.70,
-                estoque: 45,
-            },
-            {
-                id: 2,
-                codigo: "789012",
-                nome: "Macarrão",
-                categoria: "Comida",
-                descricao: "Macarrão tipo espaguete com molho de tomate caseiro.",
-                preco: 6.78,
-                estoque: 26,
-            },
-            {
-                id: 3,
-                codigo: "345678",
-                nome: "Pizza",
-                categoria: "Comida",
-                descricao: "Pizza de mussarela com tomate e orégano.",
-                preco: 25.00,
-                estoque: 15,
-            },
-            {
-                id: 4,
-                codigo: "901234",
-                nome: "Refrigerante",
-                categoria: "Bebida",
-                descricao: "Refrigerante de cola 2L.",
-                preco: 5.00,
-                estoque: 50,
-            },
-        ]);
-
-        const addProduto = () => {
-            const id = prompt("Id do produto");
+        const addProduto = async () => {
             const codigo = prompt("Código do produto");
             const nome = prompt("Nome do produto");
             const categoria = prompt("Categoria do produto");
@@ -154,21 +115,44 @@ export default {
             const preco = prompt("Preço do produto");
             const estoque = prompt("Quantidade do produto em estoque:");
 
-            const produto = {
-                id: id,
-                codigo: codigo,
-                nome: nome,
-                categoria: categoria,
-                descricao: descricao,
-                preco, preco,
-                estoque: estoque
-            }
+            try {
+                const response = await axios.post('http://127.0.0.1:8000/cadastrar-produto/', {
+                    codigo: codigo,
+                    nome: nome,
+                    categoria: categoria,
+                    descricao: descricao,
+                    preco: preco,
+                    estoque: estoque
+                })
 
-            produtos.value.push(produto)
+                console.log(response)
+
+                if (response.status === 201) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    console.log("não cadastrado");
+                }
+            } catch (error) {
+                console.error(error, 'erro vindo do backend');
+            }
         }
 
-        const deletarProduto = (id) => {
-            produtos.value = produtos.value.filter(produto => produto.id !== id);
+        const deleteProduto = async (id) => {
+            try {
+                const response = await axios.delete(`http://127.0.0.1:8000/excluir-produto/${id}/`);
+                if (response.status === 204) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+
+                } else {
+                    console.log("Erro ao deletar produto");
+                }
+            } catch (error) {
+                console.error('Erro ao deletar o produto:', error);
+            }
         };
 
         const acrescentar = (produto) => {
@@ -197,9 +181,8 @@ export default {
 
 
         return {
-            produtos, // Make sure to return the produtos ref
-            filtro: '', // Optional filter string
-            deletarProduto,
+            filtro: '',
+            deleteProduto,
             acrescentar,
             decrementar,
             addProduto,
@@ -211,6 +194,19 @@ export default {
         TemplateProdutos,
     },
     data() {
+        return {
+            produtos: [],
+        };
+        
+    },
+    mounted() {
+        // get dos produtos
+        fetch('http://127.0.0.1:8000/api/produtos')
+            .then(response => response.json())
+            .then(produtos => {
+                this.produtos = produtos;
+            })
+            .catch(error => console.error('Erro ao recuperar os produtos:', error));
     },
     methods: {
     },
