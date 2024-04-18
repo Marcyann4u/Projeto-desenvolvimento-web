@@ -68,12 +68,13 @@
           <tr v-for="colaborador in colaboradores" :key="colaborador.id">
             <td>{{ colaborador.nome }}</td>
             <td>{{ colaborador.email }}</td>
-            <td class="hidden-table">{{ colaborador.funcao }}</td>
+            <td class="hidden-table">{{ colaborador.tipo }}</td>
             <td class="botoes-estoque hidden-table">
-              <button @click="deletarColaborador(colaborador.id)">
+              <button @click="deleteColaborador(colaborador.id)">
                 <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
               </button>
-              <button><font-awesome-icon :icon="['fas', 'edit']" class="icon-decre-incre" /></button>
+              <button @click="editarColaborador(colaborador.id)"><font-awesome-icon :icon="['fas', 'edit']"
+                  class="icon-decre-incre" /></button>
             </td>
           </tr>
         </tbody>
@@ -83,6 +84,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { ref } from 'vue';
 import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateColaboradores from '../reusable/TemplateProdutos.vue'
@@ -90,55 +92,93 @@ import TemplateColaboradores from '../reusable/TemplateProdutos.vue'
 export default {
   name: 'ForgotPassword',
   setup() {
-    const colaboradores = ref([
-      {
-        id: 1,
-        nome: "Ruan Guedes da Silva",
-        email: "ruan@empresa.com",
-        funcao: "Funcionario",
-      },
-      {
-        id: 2,
-        nome: "Joao Neto",
-        email: "joaoneto@empresa.com",
-        funcao: "Funcionario",
-      },
-      {
-        id: 3,
-        nome: "Miguel",
-        email: "miguel@empresa.com",
-        funcao: "Funcionario",
-      },
 
-    ]);
-
-    const addColaborador = () => {
-      const id = prompt("Id do colaborador");
+    const addColaborador = async () => {
       const nome = prompt("Nome do colaborador");
-      const email = prompt("E-mail do colaborador");
-      const funcao = prompt("Função do colaborador");
+      const email = prompt("Endereço de email do colaborador");
+      const senha = prompt("Senha")
+      const tipo = prompt("Informe se o colaborador é FUNC ou ADM");
+      const nome_empresa = prompt("Nome da empresa do colaborador");
 
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/cadastrar-funcionario/', {
+          nome: nome,
+          email: email,
+          senha: senha,
+          tipo: tipo,
+          nome_empresa: nome_empresa
+        })
 
-      const colaborador = {
-        id: id,
-        nome: nome,
-        email: email,
-        funcao: funcao
+        console.log(response)
+
+        if (response.status === 201) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } else {
+          console.log("não cadastrado");
+        }
+      } catch (error) {
+        console.error(error, 'erro vindo do backend');
       }
-
-      colaboradores.value.push(colaborador)
     }
 
-    const deletarColaborador = (id) => {
-      colaboradores.value = colaboradores.value.filter(colaborador => colaborador.id !== id);
+    const deleteColaborador = async (id) => {
+      try {
+        const response = await axios.delete(`http://127.0.0.1:8000/excluir-funcionario/${id}/`);
+        if (response.status === 204) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+
+        } else {
+          console.log("Erro ao deletar produto");
+        }
+      } catch (error) {
+        console.error('Erro ao deletar o produto:', error);
+      }
     };
 
-    const decrementar = (colaborador) => {
-      if (colaborador.estoque > 0) {
-        colaborador.estoque--;
+    const editarColaborador = async (id) => {
+      let colaborador = {};
+
+      const nome = prompt("Nome do colaborador");
+      if (nome.trim() !== "") {
+        colaborador.nome = nome;
       }
-      else {
-        colaborador.estoque = 0;
+
+      const email = prompt("Email do colaborador");
+      if (email.trim() !== "") {
+        colaborador.email = email;
+      }
+
+      const senha = prompt("Senha do colaborador");
+      if (senha.trim() !== "") {
+        colaborador.senha = senha;
+      }
+
+      const tipo = prompt("Tipo do colaborador -- FUNC ou ADM");
+      if (tipo.trim() !== "") {
+        colaborador.tipo = tipo;
+      }
+
+      const nome_empresa = prompt("Empresa do colaborador");
+      if (nome_empresa.trim() !== "") {
+        colaborador.nome_empresa = nome_empresa;
+      }
+
+      try {
+        const response = await axios.put(`http://127.0.0.1:8000/editar-funcionario/${id}/`, colaborador);
+
+        if (response.status === 200) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } else {
+          console.log("Erro ao editar produto");
+        }
+      } catch (error) {
+        console.error('Erro ao editar o produto:', error);
       }
     };
 
@@ -154,11 +194,9 @@ export default {
     }
 
     return {
-      colaboradores, // Make sure to return the colaboradores ref
-      filtro: '', // Optional filter string
-      deletarColaborador,
-      decrementar,
       addColaborador,
+      deleteColaborador,
+      editarColaborador,
       abrirBotao
     };
   },
@@ -167,6 +205,19 @@ export default {
     TemplateColaboradores,
   },
   data() {
+    return {
+      colaboradores: [],
+    };
+
+  },
+  mounted() {
+    // get dos produtos
+    fetch('http://127.0.0.1:8000/api/funcionarios')
+      .then(response => response.json())
+      .then(colaboradores => {
+        this.colaboradores = colaboradores;
+      })
+      .catch(error => console.error('Erro ao recuperar os funcionários:', error));
   },
   methods: {
   },
