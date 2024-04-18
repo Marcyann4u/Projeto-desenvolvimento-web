@@ -89,7 +89,8 @@
                             <button @click="deleteProduto(produto.id)">
                                 <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
                             </button>
-                            <button><font-awesome-icon :icon="['fas', 'edit']" class="icon-decre-incre" /></button>
+                            <button @click="editarProduto(produto.id)"><font-awesome-icon :icon="['fas', 'edit']"
+                                    class="icon-decre-incre" /></button>
                         </td>
                     </tr>
                 </tbody>
@@ -155,6 +156,57 @@ export default {
             }
         };
 
+        // verifica se os campos estão preenchidos
+        const editarProduto = async (id) => {
+            let produto = {};
+
+            const codigo = prompt("Código do produto");
+            if (codigo.trim() !== "") {
+                produto.codigo = codigo;
+            }
+
+            const nome = prompt("Nome do produto");
+            if (nome.trim() !== "") {
+                produto.nome = nome;
+            }
+
+            const categoria = prompt("Categoria do produto");
+            if (categoria.trim() !== "") {
+                produto.categoria = categoria;
+            }
+
+            const descricao = prompt("Descrição do produto");
+            if (descricao.trim() !== "") {
+                produto.descricao = descricao;
+            }
+
+            const preco = prompt("Preço do produto");
+            if (preco.trim() !== "") {
+                produto.preco = preco;
+            }
+
+            const estoque = prompt("Quantidade do produto em estoque");
+            if (estoque.trim() !== "") {
+                produto.estoque = estoque;
+            }
+
+            try {
+                const response = await axios.put(`http://127.0.0.1:8000/editar-produto/${id}/`, produto);
+
+                if (response.status === 200) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    console.log("Erro ao editar produto");
+                }
+            } catch (error) {
+                console.error('Erro ao editar o produto:', error);
+            }
+        };
+
+
+
         const acrescentar = (produto) => {
             produto.estoque++;
         };
@@ -183,6 +235,7 @@ export default {
         return {
             filtro: '',
             deleteProduto,
+            editarProduto,
             acrescentar,
             decrementar,
             addProduto,
@@ -197,7 +250,7 @@ export default {
         return {
             produtos: [],
         };
-        
+
     },
     mounted() {
         // get dos produtos
