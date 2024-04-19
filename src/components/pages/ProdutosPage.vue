@@ -57,6 +57,17 @@
                 </button>
             </div>
 
+            <div class="msg-sucess__container" id="msg-sucess">
+                <p>Cadastrado com sucesso!</p>
+            </div>
+
+            <div class="msg-delete__container" id="msg-delete">
+                <p>Deletado com sucesso!</p>
+            </div>
+
+            <div class="msg-sucess__container" id="msg-edit">
+                <p>Produto editado!</p>
+            </div>
 
             <table>
                 <thead>
@@ -101,13 +112,14 @@
 
 <script>
 import axios from 'axios';
-import { ref } from 'vue';
 import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateProdutos from '../reusable/TemplateProdutos.vue'
+import MensagemSucesso from '../reusable/MensagemSucesso.vue';
 
 export default {
     name: 'ForgotPassword',
     setup() {
+
         const addProduto = async () => {
             const codigo = prompt("Código do produto");
             const nome = prompt("Nome do produto");
@@ -128,9 +140,11 @@ export default {
 
                 console.log(response)
 
+                const msg_sucess = document.getElementById('msg-sucess')
                 if (response.status === 201) {
+                    msg_sucess.style.display = 'flex';
                     setTimeout(() => {
-                        window.location.reload();
+                        window.location.reload()
                     }, 1000);
                 } else {
                     console.log("não cadastrado");
@@ -143,7 +157,10 @@ export default {
         const deleteProduto = async (id) => {
             try {
                 const response = await axios.delete(`http://127.0.0.1:8000/excluir-produto/${id}/`);
+
+                const delete_mensagem = document.getElementById('msg-delete')
                 if (response.status === 204) {
+                    delete_mensagem.style.display = 'flex';
                     setTimeout(() => {
                         window.location.reload();
                     }, 1000);
@@ -193,7 +210,9 @@ export default {
             try {
                 const response = await axios.put(`http://127.0.0.1:8000/editar-produto/${id}/`, produto);
 
+                const edit_mensagem = document.getElementById('msg-edit')
                 if (response.status === 200) {
+                    edit_mensagem.style.display = 'flex';
                     setTimeout(() => {
                         window.location.reload();
                     }, 1000);
@@ -245,6 +264,7 @@ export default {
     components: {
         BaraLateral,
         TemplateProdutos,
+        MensagemSucesso
     },
     data() {
         return {
@@ -362,8 +382,29 @@ main {
     background-color: rgb(231, 241, 250);
 }
 
-.hidden {
+.hidden,
+#msg-sucess, #msg-delete, #msg-edit {
     display: none;
+}
+
+.msg-sucess__container {
+    margin: 10px auto 0;
+    background-color: rgb(182, 250, 193);
+}
+
+.msg-sucess__container p {
+    padding: 5px;
+    color: rgb(47, 73, 21);
+}
+
+.msg-delete__container {
+    margin: 10px auto 0;
+    background-color: rgb(250, 182, 182);
+    color: rgb(86, 17, 17);
+}
+
+.msg-delete__container p{
+    padding: 5px;
 }
 
 .header {
