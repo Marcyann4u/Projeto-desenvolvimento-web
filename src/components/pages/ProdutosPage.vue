@@ -114,7 +114,6 @@
 import axios from 'axios';
 import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateProdutos from '../reusable/TemplateProdutos.vue'
-import MensagemSucesso from '../reusable/MensagemSucesso.vue';
 
 export default {
     name: 'ForgotPassword',
@@ -264,7 +263,6 @@ export default {
     components: {
         BaraLateral,
         TemplateProdutos,
-        MensagemSucesso
     },
     data() {
         return {
