@@ -66,7 +66,7 @@
             </div>
 
             <div class="msg-sucess__container" id="msg-edit">
-                <p>Produto editado!</p>
+                <p>Editado com sucesso!</p>
             </div>
 
             <table>
