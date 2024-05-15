@@ -30,45 +30,6 @@
   </TemplateRegister>
 </template>
 
-<!-- <script>
-  import { ref } from 'vue';
-  import BaseInput from '../reusable/BaseInput.vue';
-  import Button from '../reusable/Button.vue'
-  import TemplateRegister from '../reusable/TemplateRegister.vue';
-  import Modal from  '../reusable/Modal.vue';
-
-  import axios from 'axios';
-
-  export default {
-  name: 'SignUp',
-  components: {
-    BaseInput,
-    Button,
-    TemplateRegister,
-    Modal,
-  },
-  setup() {
-    const popupTriggers = ref({
-      buttonTrigger: false,
-    });
-
-    const firstName = ref('');
-    const displayText = ref('');
-
-    const updateText = () => {
-      displayText.value = firstName.value;
-    };
-
-    return {
-      popupTriggers,
-      firstName,
-      displayText,
-      updateText,
-    };
-  },
-};
-  </script> -->
-
 <script>
 import axios from 'axios';
 import { ref } from 'vue';
@@ -91,29 +52,28 @@ export default {
     const password = ref('');
 
     const loginUser = async () => {
-
       try {
-        const response = await axios.post('http://127.0.0.1:8000/login/', {
+        const response = await axios.post('http://192.168.0.100:8000/api/login', {
           email: firstName.value,
           password: password.value,
-        })
+        });
 
         if (response.status === 200) {
-          console.log(password.value, firstName.value)
-          window.location = '/produtospage'
-          console.log("passou")
+          const token = response.data.token; // Supondo que o token esteja na resposta da API
+
+          // Salva o token no localStorage
+          localStorage.setItem('token', token);
+
+          console.log('Token salvo:', token);
+          window.location = '/produtospage';
         } else {
-          console.log("não acessou.");
+          console.log("Login não realizado");
         }
       } catch (error) {
-        console.error(error, 'erro vindo do backend');
         document.getElementById('error-msg').style.display = 'block';
-        setTimeout(() => {
-          // Recarrega a página após 3 segundos
-          window.location.reload();
-        }, 2000);
       }
     };
+
     
 
     return {
