@@ -103,21 +103,25 @@ import TemplateColaboradores from '../reusable/TemplateProdutos.vue'
 export default {
   name: 'ForgotPassword',
   setup() {
+    
+    const get = () => {
+
+    }
 
     const addColaborador = async () => {
-      const nome = prompt("Nome do colaborador");
+      const name = prompt("Nome do colaborador");
       const email = prompt("Endereço de email do colaborador");
-      const senha = prompt("Senha")
-      const tipo = prompt("Informe se o colaborador é FUNC ou ADM");
-      const nome_empresa = prompt("Nome da empresa do colaborador");
+      const password = prompt("Senha")
+      const is_gerente = prompt("É gerente: true ou false");
+      const empresa_id = prompt("Nome da empresa do colaborador");
 
       try {
-        const response = await axios.post('http://127.0.0.1:8000/cadastrar-funcionario/', {
-          nome: nome,
+        const response = await axios.post('http://192.168.0.100:8000/api/createuser', {
+          name: name,
           email: email,
-          senha: senha,
-          tipo: tipo,
-          nome_empresa: nome_empresa
+          password: password,
+          is_gerente: is_gerente,
+          empresa_id: empresa_id
         })
 
         console.log(response)
@@ -229,13 +233,13 @@ export default {
 
   },
   mounted() {
-    // get dos produtos
-    fetch('http://127.0.0.1:8000/api/funcionarios')
-      .then(response => response.json())
-      .then(colaboradores => {
-        this.colaboradores = colaboradores;
-      })
-      .catch(error => console.error('Erro ao recuperar os funcionários:', error));
+    // // get dos produtos
+    // fetch('http://127.0.0.1:8000/api/funcionarios')
+    //   .then(response => response.json())
+    //   .then(colaboradores => {
+    //     this.colaboradores = colaboradores;
+    //   })
+    //   .catch(error => console.error('Erro ao recuperar os funcionários:', error));
   },
   methods: {
   },
