@@ -7,17 +7,13 @@
 
             <div class="barra-lateral__content--links">
                 <ul>
-                    <li>Loja do Programador</li>
-                    <li>Luana Paes</li>
-                    <li>estoque@loja.com</li>
+                    <li>Armazém Fácil</li>
                     <li>
                         <routerLink to="/colaboradorespage">Colaboradores</routerLink>
                     </li>
                     <li>
                         <routerLink to="/resetpassword">Trocar senha</routerLink>
                     </li>
-                    <!-- <li><a href="">Colaboradores</a></li>
-                    <li><a href="./ResetPassword.vue">Trocar senha</a></li> -->
                 </ul>
             </div>
 
@@ -89,7 +85,7 @@
                         <td>{{ produto.categoria }}</td>
                         <td class="hidden-table">{{ produto.descricao }}</td>
                         <td>R${{ produto.preco }}</td>
-                        <td>{{ produto.estoque }}</td>
+                        <td>{{ produto.qtdunitaria }}</td>
                         <td class="botoes-estoque hidden-table">
                             <button @click="deleteProduto(produto.id)">
                                 <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
@@ -348,7 +344,7 @@ export default {
 
 .barra-lateral__content--links {
     margin-top: -150px;
-    height: 30%;
+    height: 20%;
     padding-left: 20px;
     font-size: 18px;
 }
