@@ -103,6 +103,11 @@ import TemplateColaboradores from '../reusable/TemplateProdutos.vue'
 export default {
   name: 'ForgotPassword',
   setup() {
+    const empresa_id = ref(null);
+    const token = ref(null);
+
+    empresa_id.value = localStorage.getItem('empresa_id');
+    token.value = localStorage.getItem('token');
   
     const addColaborador = async () => {
       const name = prompt("Nome do colaborador");
@@ -136,10 +141,16 @@ export default {
 
     const deleteColaborador = async (id) => {
       try {
-        const response = await axios.delete(`http://127.0.0.1:8000/excluir-funcionario/${id}/`);
+        const response = await axios.delete(`http://192.168.0.100:8000/api/deleteuser/${id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token.value}`,
+            'Content-Type': 'application/json'
+          }
+        });
 
         const delete_mensagem = document.getElementById('msg-delete')
-        if (response.status === 204) {
+        if (response.status === 200) {
           delete_mensagem.style.display = 'flex';
           setTimeout(() => {
             window.location.reload();
@@ -264,7 +275,7 @@ export default {
 
 .container {
   width: 100vw;
-  height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: row;
 }
@@ -378,7 +389,6 @@ main {
 }
 
 .header {
-
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -447,7 +457,8 @@ main {
 
 table {
   margin-top: 40px;
-  width: 100%;
+  width: auto;
+  overflow:hidden;
   border-collapse: collapse;
 }
 
@@ -464,6 +475,9 @@ td {
 th {
   font-weight: bold;
   border-bottom: 1.5px solid #ABABAB;
+}
+tbody{
+  overflow-y: scroll;
 }
 
 /* Borda inferior em todas as células */
