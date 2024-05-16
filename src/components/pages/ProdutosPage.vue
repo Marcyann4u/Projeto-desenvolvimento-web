@@ -91,12 +91,6 @@
                         <td>R${{ produto.preco }}</td>
                         <td>{{ produto.estoque }}</td>
                         <td class="botoes-estoque hidden-table">
-                            <button @click="acrescentar(produto)">
-                                <font-awesome-icon :icon="['fas', 'plus']" class="icon-decre-incre" />
-                            </button>
-                            <button @click="decrementar(produto)">
-                                <font-awesome-icon :icon="['fas', 'minus']" class="icon-decre-incre" />
-                            </button>
                             <button @click="deleteProduto(produto.id)">
                                 <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
                             </button>
@@ -170,10 +164,15 @@ export default {
 
         const deleteProduto = async (id) => {
             try {
-                const response = await axios.delete(`http://127.0.0.1:8000/excluir-produto/${id}/`);
+                const response = await axios.delete(`http://192.168.0.100:8000/api/deleteiten/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token.value}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
 
                 const delete_mensagem = document.getElementById('msg-delete')
-                if (response.status === 204) {
+                if (response.status === 200) {
                     delete_mensagem.style.display = 'flex';
                     setTimeout(() => {
                         window.location.reload();
@@ -244,20 +243,6 @@ export default {
         };
 
 
-
-        const acrescentar = (produto) => {
-            produto.estoque++;
-        };
-
-        const decrementar = (produto) => {
-            if (produto.estoque > 0) {
-                produto.estoque--;
-            }
-            else {
-                produto.estoque = 0;
-            }
-        };
-
         const abrirBotao = () => {
             let btnLateral = document.getElementById('barra-lateral')
 
@@ -274,8 +259,6 @@ export default {
             filtro: '',
             deleteProduto,
             editarProduto,
-            acrescentar,
-            decrementar,
             addProduto,
             abrirBotao,
         };
