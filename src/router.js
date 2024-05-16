@@ -9,13 +9,55 @@ import ProdutosPage from './components/pages/ProdutosPage.vue';
 
 
 
+
 const routes = [
-  { path: '/', component: SignUp },
-  { path: '/forgotpassword', component: ForgotPassword },
-  { path: '/resetpassword', component: ResetPassword },
-  { path: '/example', component: Example },
-  { path: '/colaboradorespage', component: ColaboradoresPage },
-  { path: '/produtospage', component: ProdutosPage },
+  {
+    path: '/',
+    component: SignUp
+  },
+  {
+    path: '/forgotpassword',
+    component: ForgotPassword
+  },
+  {
+    path: '/resetpassword',
+    component: ResetPassword,
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        next('/') // cao não tiver token vai para a página de login
+      } else {
+        // só passa se tiver token
+        next()
+      }
+    }
+  },
+  {
+    path: '/colaboradorespage',
+    component: ColaboradoresPage,
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        next('/') // cao não tiver token vai para a página de login
+      } else {
+        // só passa se tiver token
+        next()
+      }
+    }
+  },
+  {
+    path: '/produtospage',
+    component: ProdutosPage,
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        next('/') // cao não tiver token vai para a página de login
+      } else {
+        // só passa se tiver token
+        next()
+      }
+    }
+  },
 ];
 
 const router = createRouter({
