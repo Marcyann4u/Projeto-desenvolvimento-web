@@ -14,7 +14,9 @@
     "@fortawesome/vue-fontawesome": "^3.0.6",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
+    "jwt-decode": "^4.0.0",
     "vue": "^3.4.15",
+    "vue-jwt-decode": "^0.1.0",
     "vue-router": "^4.3.0",
     "vuex": "^4.1.0"
   },

@@ -60,9 +60,14 @@ export default {
 
         if (response.status === 200) {
           const token = response.data.token; // Supondo que o token esteja na resposta da API
+          const id_funcionario = response.data.user.id;
+          const id_empresa = response.data.user.empresa_id
+
 
           // Salva o token no localStorage
           localStorage.setItem('token', token);
+          localStorage.setItem('id', id_funcionario);
+          localStorage.setItem('empresa_id', id_empresa);
 
           console.log('Token salvo:', token);
           window.location = '/produtospage';

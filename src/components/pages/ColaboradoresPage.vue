@@ -77,9 +77,9 @@
 
         <tbody>
           <tr v-for="colaborador in colaboradores" :key="colaborador.id">
-            <td>{{ colaborador.nome }}</td>
+            <td>{{ colaborador.name }}</td>
             <td>{{ colaborador.email }}</td>
-            <td class="hidden-table">{{ colaborador.tipo }}</td>
+            <td class="hidden-table">{{ colaborador.is_gerente }}</td>
             <td class="botoes-estoque hidden-table">
               <button @click="deleteColaborador(colaborador.id)">
                 <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
@@ -96,18 +96,14 @@
 
 <script>
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref} from 'vue';
 import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateColaboradores from '../reusable/TemplateProdutos.vue'
 
 export default {
   name: 'ForgotPassword',
   setup() {
-    
-    const get = () => {
-
-    }
-
+  
     const addColaborador = async () => {
       const name = prompt("Nome do colaborador");
       const email = prompt("Endereço de email do colaborador");
@@ -124,8 +120,6 @@ export default {
           empresa_id: empresa_id
         })
 
-        console.log(response)
-
         const msg_sucess = document.getElementById('msg-sucess')
         if (response.status === 201) {
           msg_sucess.style.display = 'flex';
@@ -133,17 +127,17 @@ export default {
             window.location.reload();
           }, 1000);
         } else {
-          console.log("não cadastrado");
+          console.log("Funcionário não cadastrado");
         }
       } catch (error) {
-        console.error(error, 'erro vindo do backend');
+        console.error(error, 'Servidor error');
       }
     }
 
     const deleteColaborador = async (id) => {
       try {
         const response = await axios.delete(`http://127.0.0.1:8000/excluir-funcionario/${id}/`);
-        
+
         const delete_mensagem = document.getElementById('msg-delete')
         if (response.status === 204) {
           delete_mensagem.style.display = 'flex';
@@ -219,7 +213,7 @@ export default {
       addColaborador,
       deleteColaborador,
       editarColaborador,
-      abrirBotao
+      abrirBotao,
     };
   },
   components: {
@@ -228,18 +222,31 @@ export default {
   },
   data() {
     return {
-      colaboradores: [],
+      colaboradores: []
     };
 
   },
   mounted() {
-    // // get dos produtos
-    // fetch('http://127.0.0.1:8000/api/funcionarios')
-    //   .then(response => response.json())
-    //   .then(colaboradores => {
-    //     this.colaboradores = colaboradores;
-    //   })
-    //   .catch(error => console.error('Erro ao recuperar os funcionários:', error));
+    // get dos produtos
+    const empresa_id = ref(null);
+    const token = ref(null);
+
+    empresa_id.value = localStorage.getItem('empresa_id');
+    token.value = localStorage.getItem('token');
+
+    fetch(`http://192.168.0.100:8000/api/showoneempresaf/${empresa_id.value}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(colaboradores => {
+        this.colaboradores = colaboradores.users;
+        console.log(colaboradores)
+      })
+      .catch(error => console.error('Erro ao recuperar os funcionários:', error));
   },
   methods: {
   },
@@ -247,6 +254,7 @@ export default {
 </script>
 
 <style scoped>
+
 * {
   margin: 0;
   padding: 0;
