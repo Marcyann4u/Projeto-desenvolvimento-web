@@ -22,7 +22,7 @@
             </div>
 
             <div class="barra-lateral__content--button-sair">
-                <button class="botao-sair" id="">Sair</button>
+                <button class="botao-sair" id="" @click="logout()">Sair</button>
             </div>
         </nav>
 
@@ -308,6 +308,14 @@ export default {
             .catch(error => console.error('Erro ao recuperar os funcionários:', error));
     },
     methods: {
+        logout() {
+            // Limpar o token armazenado no localStorage
+            localStorage.removeItem('token');
+
+            // Redirecionar para a página de login
+            this.$router.push('/');
+        }
+
     },
 };
 </script>
