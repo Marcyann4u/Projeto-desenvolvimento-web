@@ -112,46 +112,61 @@
 
 <script>
 import axios from 'axios';
+import { ref } from 'vue';
 import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateProdutos from '../reusable/TemplateProdutos.vue'
 
 export default {
     name: 'ForgotPassword',
     setup() {
+        const empresa_id = ref(null);
+        const token = ref(null);
+        const id = ref(null)
+
+        empresa_id.value = localStorage.getItem('empresa_id');
+        id.value = localStorage.getItem('id')
+        token.value = localStorage.getItem('token');
 
         const addProduto = async () => {
             const codigo = prompt("Código do produto");
             const nome = prompt("Nome do produto");
             const categoria = prompt("Categoria do produto");
-            const descricao = prompt("Descrição do produto")
+            const descricao = prompt("Descrição do produto");
             const preco = prompt("Preço do produto");
-            const estoque = prompt("Quantidade do produto em estoque:");
+            const qtdunitaria = prompt("Quantidade do produto em estoque:");
 
             try {
-                const response = await axios.post('http://127.0.0.1:8000/cadastrar-produto/', {
+                const response = await axios.post(`http://192.168.0.100:8000/api/createiten/${id.value}`, {
                     codigo: codigo,
                     nome: nome,
                     categoria: categoria,
                     descricao: descricao,
                     preco: preco,
-                    estoque: estoque
-                })
+                    qtdunitaria: qtdunitaria,
+                    user_id: id.value,
+                    empresa_id: empresa_id.value
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${token.value}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-                console.log(response)
 
-                const msg_sucess = document.getElementById('msg-sucess')
+                const msg_sucess = document.getElementById('msg-sucess');
                 if (response.status === 201) {
                     msg_sucess.style.display = 'flex';
                     setTimeout(() => {
-                        window.location.reload()
+                        window.location.reload();
                     }, 1000);
                 } else {
-                    console.log("não cadastrado");
+                    console.log("Não cadastrado");
                 }
             } catch (error) {
-                console.error(error, 'erro vindo do backend');
+                console.error(error, 'Erro vindo do backend');
             }
         }
+
 
         const deleteProduto = async (id) => {
             try {
@@ -272,12 +287,25 @@ export default {
     },
     mounted() {
         // get dos produtos
-        fetch('http://127.0.0.1:8000/api/produtos')
+        const empresa_id = ref(null);
+        const token = ref(null);
+
+        empresa_id.value = localStorage.getItem('empresa_id');
+        token.value = localStorage.getItem('token');
+
+        fetch(`http://192.168.0.100:8000/api/showitens`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token.value}`,
+                'Content-Type': 'application/json'
+            }
+        })
             .then(response => response.json())
             .then(produtos => {
                 this.produtos = produtos;
+                console.log("AQUI", produtos)
             })
-            .catch(error => console.error('Erro ao recuperar os produtos:', error));
+            .catch(error => console.error('Erro ao recuperar os funcionários:', error));
     },
     methods: {
     },
@@ -381,7 +409,9 @@ main {
 }
 
 .hidden,
-#msg-sucess, #msg-delete, #msg-edit {
+#msg-sucess,
+#msg-delete,
+#msg-edit {
     display: none;
 }
 
@@ -401,7 +431,7 @@ main {
     color: rgb(86, 17, 17);
 }
 
-.msg-delete__container p{
+.msg-delete__container p {
     padding: 5px;
 }
 
