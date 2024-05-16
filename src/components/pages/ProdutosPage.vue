@@ -43,9 +43,6 @@
             </div>
 
             <div class="filtro__pesquisa">
-                <input type="text" placeholder="nome ou código">
-
-                <p>Filtro</p>
 
                 <button @click="addProduto()">
                     <font-awesome-icon :icon="['fas', 'plus']" class="icon-mais" />
@@ -445,12 +442,10 @@ main {
 }
 
 .filtro__pesquisa {
-    background-color: #fff;
-    border-radius: 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: end;
     height: 60px;
     width: 100%;
     padding: 10px;

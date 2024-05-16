@@ -7,11 +7,9 @@
 
       <div class="barra-lateral__content--links">
         <ul>
-          <li>Loja do Programador</li>
-          <li>Luana Paes</li>
-          <li>estoque@loja.com</li>
+          <li>Armazém Fácil</li>
           <li>
-            <routerLink to="/produtospage">Produtos</routerLink>
+            <routerLink to="/colaboradorespage">Colaboradores</routerLink>
           </li>
           <li>
             <routerLink to="/resetpassword">Trocar senha</routerLink>
@@ -37,18 +35,10 @@
           <p class="colab">Exibindo {{ colaboradores.length }} colaboradores</p>
         </div>
 
-        <div class="header--perfil">
-          <a href="#">
-            <img src="../../assets/aiony-haust-3TLl_97HNJo-unsplash.jpg" alt="foto de perfil do usuário">
-          </a>
-        </div>
+
       </div>
 
       <div class="filtro__pesquisa">
-        <input type="text" placeholder="nome ou código">
-
-        <p>Filtro</p>
-
         <button @click="addColaborador()">
           <font-awesome-icon :icon="['fas', 'plus']" class="icon-mais" /> Cadastrar
         </button>
@@ -79,7 +69,7 @@
           <tr v-for="colaborador in colaboradores" :key="colaborador.id">
             <td>{{ colaborador.name }}</td>
             <td>{{ colaborador.email }}</td>
-            <td class="hidden-table">{{ colaborador.is_gerente }}</td>
+            <td class="hidden-table">{{ getRole(colaborador.is_gerente) }}</td>
             <td class="botoes-estoque hidden-table">
               <button @click="deleteColaborador(colaborador.id)">
                 <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
@@ -274,8 +264,12 @@ export default {
 
         // Redirecionar para a página de login
         this.$router.push('/');
+      },
+
+      getRole(isGerente) {
+        return isGerente ? 'Gerente' : 'Funcionário';
       }
-    
+  
   },
 };
 </script>
@@ -320,7 +314,7 @@ export default {
 
 .barra-lateral__content--links {
   margin-top: -150px;
-  height: 30%;
+  height: 20%;
   padding-left: 20px;
   font-size: 18px;
 }
@@ -420,12 +414,10 @@ main {
 }
 
 .filtro__pesquisa {
-  background-color: #fff;
-  border-radius: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content:end;
   height: 60px;
   width: 100%;
   padding: 10px;
