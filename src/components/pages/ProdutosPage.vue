@@ -196,9 +196,9 @@ export default {
                 produto.codigo = codigo;
             }
 
-            const nome = prompt("Nome do produto");
-            if (nome.trim() !== "") {
-                produto.nome = nome;
+            const name = prompt("Nome do produto");
+            if (name.trim() !== "") {
+                produto.name = name;
             }
 
             const categoria = prompt("Categoria do produto");
@@ -216,13 +216,18 @@ export default {
                 produto.preco = preco;
             }
 
-            const estoque = prompt("Quantidade do produto em estoque");
-            if (estoque.trim() !== "") {
-                produto.estoque = estoque;
+            const qtdunitaria = prompt("Quantidade do produto em estoque");
+            if (qtdunitaria.trim() !== "") {
+                produto.qtdunitaria = qtdunitaria;
             }
 
             try {
-                const response = await axios.put(`http://127.0.0.1:8000/editar-produto/${id}/`, produto);
+                const response = await axios.put(`http://192.168.0.100:8000/api/editeiten/${id}`, produto, {
+                    headers: {
+                        'Authorization': `Bearer ${token.value}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
 
                 const edit_mensagem = document.getElementById('msg-edit')
                 if (response.status === 200) {
