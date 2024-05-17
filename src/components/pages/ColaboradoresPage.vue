@@ -9,7 +9,7 @@
         <ul>
           <li>Armazém Fácil</li>
           <li>
-            <routerLink to="/colaboradorespage">Colaboradores</routerLink>
+            <routerLink to="/produtospage">Produtos</routerLink>
           </li>
           <li>
             <routerLink to="/resetpassword">Trocar senha</routerLink>
@@ -39,7 +39,7 @@
       </div>
 
       <div class="filtro__pesquisa">
-        <button @click="addColaborador()">
+        <button v-if="isGerente" @click="addColaborador()">
           <font-awesome-icon :icon="['fas', 'plus']" class="icon-mais" /> Cadastrar
         </button>
       </div>
@@ -95,9 +95,12 @@ export default {
   setup() {
     const empresa_id = ref(null);
     const token = ref(null);
+    const id = ref(null);
+    const isGerente = ref(false);
 
     empresa_id.value = localStorage.getItem('empresa_id');
     token.value = localStorage.getItem('token');
+    id.value = localStorage.getItem('id');
 
     const addColaborador = async () => {
       const name = prompt("Nome do colaborador");
@@ -214,15 +217,30 @@ export default {
       }
     }
 
-    // const logout = () =>{
+    const verificarUsuario = async (id) => {
+      try {
+        const response = await fetch(`http://192.168.0.100:8000/api/showoneuser/${id.value}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token.value}`,
+            'Content-Type': 'application/json'
+          }
+        });
 
-    // }
+        const user = await response.json();
+        isGerente.value = user.user.is_gerente === "true";
+      } catch (error) {
+        console.error('Erro ao recuperar os funcionários:', error);
+      }
+    };
+    verificarUsuario(id);
 
     return {
       addColaborador,
       deleteColaborador,
       editarColaborador,
       abrirBotao,
+      isGerente
     };
   },
   components: {
@@ -253,23 +271,23 @@ export default {
       .then(response => response.json())
       .then(colaboradores => {
         this.colaboradores = colaboradores.users;
-        console.log(colaboradores)
       })
       .catch(error => console.error('Erro ao recuperar os funcionários:', error));
   },
   methods: {
-      logout() {
-        // Limpar o token armazenado no localStorage
-        localStorage.removeItem('token');
+    logout() {
+      // Limpar o token armazenado no localStorage
+      localStorage.removeItem('token');
 
-        // Redirecionar para a página de login
-        this.$router.push('/');
-      },
+      // Redirecionar para a página de login
+      this.$router.push('/');
+    },
 
-      getRole(isGerente) {
-        return isGerente ? 'Gerente' : 'Funcionário';
-      }
-  
+    // "pipe" para o texto não ficar true e false
+    getRole(isGerente) {
+      return isGerente ? 'Gerente' : 'Funcionário';
+    }
+
   },
 };
 </script>
@@ -417,7 +435,7 @@ main {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content:end;
+  justify-content: end;
   height: 60px;
   width: 100%;
   padding: 10px;

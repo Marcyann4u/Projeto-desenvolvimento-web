@@ -34,17 +34,11 @@
                     <h1>Lista de Produtos</h1>
                     <p v-if="produtos.length > 0">Exibindo {{ produtos.length }} produtos</p>
                 </div>
-
-                <div class="header--perfil">
-                    <a href="#">
-                        <img src="../../assets/aiony-haust-3TLl_97HNJo-unsplash.jpg" alt="foto de perfil do usuário">
-                    </a>
-                </div>
             </div>
 
             <div class="filtro__pesquisa">
 
-                <button @click="addProduto()">
+                <button v-if="isGerente" @click="addProduto()">
                     <font-awesome-icon :icon="['fas', 'plus']" class="icon-mais" />
                     Produto
                 </button>
@@ -108,7 +102,8 @@ export default {
     setup() {
         const empresa_id = ref(null);
         const token = ref(null);
-        const id = ref(null)
+        const id = ref(null);
+        const isGerente = ref(false);
 
         empresa_id.value = localStorage.getItem('empresa_id');
         id.value = localStorage.getItem('id')
@@ -247,6 +242,24 @@ export default {
             }
         }
 
+        const verificarUsuario = async (id) => {
+            try {
+                const response = await fetch(`http://192.168.0.100:8000/api/showoneuser/${id.value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token.value}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const user = await response.json();
+                isGerente.value = user.user.is_gerente === "true"; // Update isGerente after data is fetched
+            } catch (error) {
+                console.error('Erro ao recuperar os funcionários:', error);
+            }
+        };
+        verificarUsuario(id);
+
 
         return {
             filtro: '',
@@ -254,6 +267,7 @@ export default {
             editarProduto,
             addProduto,
             abrirBotao,
+            isGerente,
         };
     },
     components: {
@@ -284,7 +298,6 @@ export default {
             .then(response => response.json())
             .then(produtos => {
                 this.produtos = produtos;
-                console.log("AQUI", produtos)
             })
             .catch(error => console.error('Erro ao recuperar os funcionários:', error));
     },
