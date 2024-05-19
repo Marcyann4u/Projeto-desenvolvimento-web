@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./Produtos.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="barra-lateral__content" id="barra-lateral">
+            <div class="barra-lateral__content--logo">
+                <img src="../../assets/mdi_box-check.png" alt="">
+            </div>
+
+            <div class="barra-lateral__content--links">
+                <ul>
+                    <li>Loja do Programador</li>
+                    <li>Luana Paes</li>
+                    <li>estoque@loja.com</li>
+                    <li><a href="#">Colaboradores</a></li>
+                    <li><a href="#">Trocar senha</a></li>
+                </ul>
+            </div>
+
+            <div class="barra-lateral__content--button-sair">
+                <button class="botao-sair" id="">Sair</button>
+            </div>
+        </nav>
+
+        <main>
+            <div class="header">
+                <div class="header--informacoes">
+                    <div class="hidden">
+                        <button onclick="abrirBotao()" id="btn-lateral">abrir</button>
+                    </div>
+
+                    <h1>Lista de Produtos</h1>
+                    <p>Exibindo 4 produtos</p>
+                </div>
+
+                <div class="header--perfil">
+                    <a href="#">
+                        <img src="../../assets/aiony-haust-3TLl_97HNJo-unsplash.jpg" alt="foto de perfil do usuário">
+                    </a>
+                </div>
+            </div>
+
+            <div class="filtro__pesquisa">
+                <input type="text" placeholder="nome ou código">
+
+                <p>Filtro</p>
+
+                <button>Adicionar</button>
+            </div>
+
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th class="hidden">Descrição</th>
+                        <th>Preço</th>
+                        <th>Estoque</th>
+                        <th class="hidden"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>102030</td>
+                        <td>Arroz</td>
+                        <td>comida</td>
+                        <td class="hidden">Arroz branco</td>
+                        <td>R$12,99</td>
+                        <td>30</td>
+
+                    </tr>
+                    <tr>
+                        <td>102030</td>
+                        <td>Arroz</td>
+                        <td>comida</td>
+                        <td class="hidden">Arroz branco</td>
+                        <td>R$12,99</td>
+                        <td>30</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script>
+        let barraLateral = document.getElementById('barra-lateral');
+        console.log(barraLateral)
+
+        function abrirBotao() {
+            if (barraLateral.style.display == 'none') {
+                barraLateral.style.display = 'flex';
+            }
+            else {
+                barraLateral.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>
