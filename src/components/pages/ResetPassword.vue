@@ -48,7 +48,7 @@ export default {
       let colaborador = { password: password.value };
 
       try {
-        const response = await axios.put(`http://192.168.0.100:8000/api/edituser/${id.value}`, colaborador, {
+        const response = await axios.put(`http://192.168.0.104:8000/api/edituser/${id.value}`, colaborador, {
           headers: {
             'Authorization': `Bearer ${token.value}`,
             'Content-Type': 'application/json'

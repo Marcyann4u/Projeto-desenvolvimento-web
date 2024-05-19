@@ -53,7 +53,7 @@ export default {
 
     const loginUser = async () => {
       try {
-        const response = await axios.post('http://192.168.0.100:8000/api/login', {
+        const response = await axios.post('http://192.168.0.104:8000/api/login', {
           email: firstName.value,
           password: password.value,
         });

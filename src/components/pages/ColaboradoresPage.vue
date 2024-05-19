@@ -110,7 +110,7 @@ export default {
       const empresa_id = prompt("Nome da empresa do colaborador");
 
       try {
-        const response = await axios.post('http://192.168.0.100:8000/api/createuser', {
+        const response = await axios.post('http://192.168.0.104:8000/api/createuser', {
           name: name,
           email: email,
           password: password,
@@ -134,7 +134,7 @@ export default {
 
     const deleteColaborador = async (id) => {
       try {
-        const response = await axios.delete(`http://192.168.0.100:8000/api/deleteuser/${id}`, {
+        const response = await axios.delete(`http://192.168.0.104:8000/api/deleteuser/${id}`, {
           headers: {
             'Authorization': `Bearer ${token.value}`,
             'Content-Type': 'application/json'
@@ -185,7 +185,7 @@ export default {
       }
 
       try {
-        const response = await axios.put(`http://192.168.0.100:8000/api/edituser/${id}`, colaborador, {
+        const response = await axios.put(`http://192.168.0.104:8000/api/edituser/${id}`, colaborador, {
           headers: {
             'Authorization': `Bearer ${token.value}`,
             'Content-Type': 'application/json'
@@ -219,7 +219,7 @@ export default {
 
     const verificarUsuario = async (id) => {
       try {
-        const response = await fetch(`http://192.168.0.100:8000/api/showoneuser/${id.value}`, {
+        const response = await fetch(`http://192.168.0.104:8000/api/showoneuser/${id.value}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token.value}`,
@@ -261,7 +261,7 @@ export default {
     empresa_id.value = localStorage.getItem('empresa_id');
     token.value = localStorage.getItem('token');
 
-    fetch(`http://192.168.0.100:8000/api/showoneempresaf/${empresa_id.value}`, {
+    fetch(`http://192.168.0.104:8000/api/showoneempresaf/${empresa_id.value}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token.value}`,

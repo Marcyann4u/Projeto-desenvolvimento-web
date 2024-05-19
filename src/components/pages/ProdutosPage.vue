@@ -118,7 +118,7 @@ export default {
             const qtdunitaria = prompt("Quantidade do produto em estoque:");
 
             try {
-                const response = await axios.post(`http://192.168.0.100:8000/api/createiten/${id.value}`, {
+                const response = await axios.post(`http://192.168.0.104:8000/api/createiten/${id.value}`, {
                     codigo: codigo,
                     nome: nome,
                     categoria: categoria,
@@ -152,7 +152,7 @@ export default {
 
         const deleteProduto = async (id) => {
             try {
-                const response = await axios.delete(`http://192.168.0.100:8000/api/deleteiten/${id}`, {
+                const response = await axios.delete(`http://192.168.0.104:8000/api/deleteiten/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token.value}`,
                         'Content-Type': 'application/json'
@@ -209,7 +209,7 @@ export default {
             }
 
             try {
-                const response = await axios.put(`http://192.168.0.100:8000/api/editeiten/${id}`, produto, {
+                const response = await axios.put(`http://192.168.0.104:8000/api/editeiten/${id}`, produto, {
                     headers: {
                         'Authorization': `Bearer ${token.value}`,
                         'Content-Type': 'application/json'
@@ -244,7 +244,7 @@ export default {
 
         const verificarUsuario = async (id) => {
             try {
-                const response = await fetch(`http://192.168.0.100:8000/api/showoneuser/${id.value}`, {
+                const response = await fetch(`http://192.168.0.104:8000/api/showoneuser/${id.value}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token.value}`,
@@ -288,7 +288,7 @@ export default {
         empresa_id.value = localStorage.getItem('empresa_id');
         token.value = localStorage.getItem('token');
 
-        fetch(`http://192.168.0.100:8000/api/showitens`, {
+        fetch(`http://192.168.0.104:8000/api/showitens`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token.value}`,
