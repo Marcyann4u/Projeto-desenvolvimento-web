@@ -1,4 +1,7 @@
 <template>
+    <!-- Janela modal para cadastrar produto -->
+    <ModalProduto :isVisible="modalProdutoVisivel" @close="modalProdutoVisivel = false" @save="saveProduto" />
+
     <div class="container">
         <nav class="barra-lateral__content" id="barra-lateral">
             <div class="barra-lateral__content--logo">
@@ -38,7 +41,7 @@
 
             <div class="filtro__pesquisa">
 
-                <button v-if="isGerente" @click="addProduto()">
+                <button v-if="isGerente" @click="openModalProduto">
                     <font-awesome-icon :icon="['fas', 'plus']" class="icon-mais" />
                     Produto
                 </button>
@@ -95,7 +98,8 @@
 import axios from 'axios';
 import { ref } from 'vue';
 import BaraLateral from '../reusable/BaraLateral.vue';
-import TemplateProdutos from '../reusable/TemplateProdutos.vue'
+import TemplateProdutos from '../reusable/TemplateProdutos.vue';
+import ModalProduto from '../reusable/ProdutosModal.vue'; 
 
 export default {
     name: 'ForgotPassword',
@@ -109,13 +113,9 @@ export default {
         id.value = localStorage.getItem('id')
         token.value = localStorage.getItem('token');
 
-        const addProduto = async () => {
-            const codigo = prompt("Código do produto");
-            const nome = prompt("Nome do produto");
-            const categoria = prompt("Categoria do produto");
-            const descricao = prompt("Descrição do produto");
-            const preco = prompt("Preço do produto");
-            const qtdunitaria = prompt("Quantidade do produto em estoque:");
+        const addProduto = async (produtoData) => {
+            // recebimento dos inputs do component dialog
+            const { codigo, nome, categoria, descricao, preco, qtdunitaria } = produtoData;
 
             try {
                 const response = await axios.post(`http://192.168.0.104:8000/api/createiten/${id.value}`, {
@@ -134,9 +134,9 @@ export default {
                     }
                 });
 
-
-                const msg_sucess = document.getElementById('msg-sucess');
+                // se cadastrado exibe mensagem de sucesso
                 if (response.status === 201) {
+                    const msg_sucess = document.getElementById('msg-sucess');
                     msg_sucess.style.display = 'flex';
                     setTimeout(() => {
                         window.location.reload();
@@ -147,7 +147,8 @@ export default {
             } catch (error) {
                 console.error(error, 'Erro vindo do backend');
             }
-        }
+        };
+
 
 
         const deleteProduto = async (id) => {
@@ -253,7 +254,7 @@ export default {
                 });
 
                 const user = await response.json();
-                isGerente.value = user.user.is_gerente === "true"; // Update isGerente after data is fetched
+                isGerente.value = user.user.is_gerente === "true";
             } catch (error) {
                 console.error('Erro ao recuperar os funcionários:', error);
             }
@@ -273,10 +274,12 @@ export default {
     components: {
         BaraLateral,
         TemplateProdutos,
+        ModalProduto,
     },
     data() {
         return {
             produtos: [],
+            modalProdutoVisivel: false,
         };
 
     },
@@ -308,7 +311,17 @@ export default {
 
             // Redirecionar para a página de login
             this.$router.push('/');
-        }
+        },
+
+        // Método para abrir a janela modal de cadastro de produto
+        openModalProduto() {
+            this.modalProdutoVisivel = true;
+        },
+        // Método para lidar com o salvamento de produto
+        saveProduto(produtoData) {
+            this.addProduto(produtoData) // ao clicar, chama a função de salvar no bd
+            this.modalProdutoVisivel = false;
+        },
 
     },
 };
