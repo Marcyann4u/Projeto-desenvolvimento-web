@@ -1,6 +1,8 @@
 <template>
     <!-- Janela modal para cadastrar produto -->
     <ModalProduto :isVisible="modalProdutoVisivel" @close="modalProdutoVisivel = false" @save="saveProduto" />
+    <ModalEditProduto :isVisible="modalEditProdutoVisivel" @close="modalEditProdutoVisivel = false"
+        @save="editProduto" />
 
     <div class="container">
         <nav class="barra-lateral__content" id="barra-lateral">
@@ -84,7 +86,7 @@
                             <button @click="deleteProduto(produto.id)">
                                 <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
                             </button>
-                            <button @click="editarProduto(produto.id)"><font-awesome-icon :icon="['fas', 'edit']"
+                            <button @click="openModalEditProduto(produto.id)"><font-awesome-icon :icon="['fas', 'edit']"
                                     class="icon-decre-incre" /></button>
                         </td>
                     </tr>
@@ -100,6 +102,7 @@ import { ref } from 'vue';
 import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateProdutos from '../reusable/TemplateProdutos.vue';
 import ModalProduto from '../reusable/ProdutosModal.vue'; 
+import ModalEditProduto from '../reusable/EditProdutoModal.vue';
 
 export default {
     name: 'ForgotPassword',
@@ -176,41 +179,36 @@ export default {
         };
 
         // verifica se os campos estão preenchidos
-        const editarProduto = async (id) => {
+        const editarProduto = async (produtoData, produto_id) => {
+            const { codigo, nome, categoria, descricao, qtdunitaria, preco } = produtoData;
             let produto = {};
 
-            const codigo = prompt("Código do produto");
             if (codigo.trim() !== "") {
                 produto.codigo = codigo;
             }
 
-            const name = prompt("Nome do produto");
-            if (name.trim() !== "") {
-                produto.name = name;
+            if (nome.trim() !== "") {
+                produto.name = nome;
             }
 
-            const categoria = prompt("Categoria do produto");
             if (categoria.trim() !== "") {
                 produto.categoria = categoria;
             }
 
-            const descricao = prompt("Descrição do produto");
             if (descricao.trim() !== "") {
                 produto.descricao = descricao;
             }
 
-            const preco = prompt("Preço do produto");
             if (preco.trim() !== "") {
                 produto.preco = preco;
             }
 
-            const qtdunitaria = prompt("Quantidade do produto em estoque");
             if (qtdunitaria.trim() !== "") {
                 produto.qtdunitaria = qtdunitaria;
             }
 
             try {
-                const response = await axios.put(`http://192.168.0.104:8000/api/editeiten/${id}`, produto, {
+                const response = await axios.put(`http://192.168.0.104:8000/api/editeiten/${produto_id}`, produto, {
                     headers: {
                         'Authorization': `Bearer ${token.value}`,
                         'Content-Type': 'application/json'
@@ -275,11 +273,14 @@ export default {
         BaraLateral,
         TemplateProdutos,
         ModalProduto,
+        ModalEditProduto
     },
     data() {
         return {
             produtos: [],
             modalProdutoVisivel: false,
+            modalEditProdutoVisivel: false,
+            produto_id: '',
         };
 
     },
@@ -321,6 +322,16 @@ export default {
         saveProduto(produtoData) {
             this.addProduto(produtoData) // ao clicar, chama a função de salvar no bd
             this.modalProdutoVisivel = false;
+        },
+
+        openModalEditProduto(produto_id) {
+            this.modalEditProdutoVisivel = true;
+            this.produto_id = produto_id;
+        },
+        // Método para lidar com a edição de produto
+        editProduto(produtoData, produto_id) {
+            this.editarProduto(produtoData, this.produto_id) // ao clicar, chama a função de salvar no bd e passa o id que foi resgatado
+            this.modalEditProdutoVisivel = false;
         },
 
     },
