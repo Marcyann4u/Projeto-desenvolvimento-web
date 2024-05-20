@@ -1,5 +1,8 @@
 <template>
-  <ModalColaborador :isVisible="modalColaboradorVisivel" @close="modalColaboradorVisivel = false" @save="saveColaborador" />
+  <ModalColaborador :isVisible="modalColaboradorVisivel" @close="modalColaboradorVisivel = false"
+    @save="saveColaborador" />
+  <ModalEditColaborador :isVisible="modalEditColaboradorVisivel" @close="modalEditColaboradorVisivel = false"
+    @save="editColaborador" />
 
   <div class="container">
     <nav class="barra-lateral__content" id="barra-lateral">
@@ -76,7 +79,7 @@
               <button @click="deleteColaborador(colaborador.id)">
                 <font-awesome-icon :icon="['fas', 'trash']" class="icon-decre-incre" />
               </button>
-              <button @click="editarColaborador(colaborador.id)"><font-awesome-icon :icon="['fas', 'edit']"
+              <button @click="openModalEditColaborador(colaborador.id)"><font-awesome-icon :icon="['fas', 'edit']"
                   class="icon-decre-incre" /></button>
             </td>
           </tr>
@@ -92,6 +95,7 @@ import { ref } from 'vue';
 import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateColaboradores from '../reusable/TemplateProdutos.vue'
 import ModalColaborador from '../reusable/CadColaboradoresModal.vue'
+import ModalEditColaborador from '../reusable/EditColaboradorModal.vue'
 
 export default {
   name: 'ForgotPassword',
@@ -100,6 +104,7 @@ export default {
     const token = ref(null);
     const id = ref(null);
     const isGerente = ref(false);
+    const colaborador_id = ref(null)
 
     empresa_id.value = localStorage.getItem('empresa_id');
     token.value = localStorage.getItem('token');
@@ -162,36 +167,33 @@ export default {
       }
     };
 
-    const editarColaborador = async (id) => {
+    const editarColaborador = async (colaboradorData, colaborador_id) => {
+      const { nome, email, password, is_gerente, empresa_id } = colaboradorData;
+
       let colaborador = {};
 
-      const name = prompt("Nome do colaborador");
-      if (name.trim() !== "") {
-        colaborador.name = name;
+      if (nome.trim() !== "") {
+        colaborador.name = nome;
       }
 
-      const email = prompt("Email do colaborador");
       if (email.trim() !== "") {
         colaborador.email = email;
       }
 
-      const password = prompt("Senha do colaborador");
       if (password.trim() !== "") {
         colaborador.password = password;
       }
 
-      const is_gerente = prompt("É gerente -- true ou false");
       if (is_gerente.trim() !== "") {
         colaborador.is_gerente = is_gerente;
       }
 
-      const id_empresa = prompt("Id da empresa do colaborador");
-      if (id_empresa.trim() !== "") {
+      if (empresa_id.trim() !== "") {
         colaborador.id_empresa = id_empresa;
       }
 
       try {
-        const response = await axios.put(`http://192.168.0.104:8000/api/edituser/${id}`, colaborador, {
+        const response = await axios.put(`http://192.168.0.104:8000/api/edituser/${colaborador_id}`, colaborador, {
           headers: {
             'Authorization': `Bearer ${token.value}`,
             'Content-Type': 'application/json'
@@ -252,12 +254,15 @@ export default {
   components: {
     BaraLateral,
     TemplateColaboradores,
-    ModalColaborador
+    ModalColaborador,
+    ModalEditColaborador
   },
   data() {
     return {
       colaboradores: [],
       modalColaboradorVisivel: false,
+      modalEditColaboradorVisivel: false,
+      colaborador_id: '', // serve para guardar o id que é capturado ao abrir o modal e passar para a função de editar
     };
 
   },
@@ -306,7 +311,15 @@ export default {
       this.modalColaboradorVisivel = false;
     },
 
-
+    openModalEditColaborador(colaborador_id) {
+      this.modalEditColaboradorVisivel = true;
+      this.colaborador_id = colaborador_id;
+    },
+    // Método para lidar com o salvamento de produto
+    editColaborador(colaboradorData, colaborador_id) {
+      this.editarColaborador(colaboradorData, this.colaborador_id) // ao clicar, chama a função de salvar no bd e passa o id que foi resgatado
+      this.modalEditColaboradorVisivel = false;
+    },
   },
 };
 </script>
