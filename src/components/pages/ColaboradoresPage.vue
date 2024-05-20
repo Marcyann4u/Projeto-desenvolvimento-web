@@ -1,4 +1,6 @@
 <template>
+  <ModalColaborador :isVisible="modalColaboradorVisivel" @close="modalColaboradorVisivel = false" @save="saveColaborador" />
+
   <div class="container">
     <nav class="barra-lateral__content" id="barra-lateral">
       <div class="barra-lateral__content--logo">
@@ -39,7 +41,7 @@
       </div>
 
       <div class="filtro__pesquisa">
-        <button v-if="isGerente" @click="addColaborador()">
+        <button v-if="isGerente" @click="openModalColaborador">
           <font-awesome-icon :icon="['fas', 'plus']" class="icon-mais" /> Cadastrar
         </button>
       </div>
@@ -89,6 +91,7 @@ import axios from 'axios';
 import { ref } from 'vue';
 import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateColaboradores from '../reusable/TemplateProdutos.vue'
+import ModalColaborador from '../reusable/CadColaboradoresModal.vue'
 
 export default {
   name: 'ForgotPassword',
@@ -102,21 +105,23 @@ export default {
     token.value = localStorage.getItem('token');
     id.value = localStorage.getItem('id');
 
-    const addColaborador = async () => {
-      const name = prompt("Nome do colaborador");
-      const email = prompt("Endereço de email do colaborador");
-      const password = prompt("Senha")
-      const is_gerente = prompt("É gerente: true ou false");
-      const empresa_id = prompt("Nome da empresa do colaborador");
+    const addColaborador = async (colaboradorData) => {
+      // recebimento dos inputs do component dialog
+      const { nome, email, password, is_gerente, empresa_id } = colaboradorData;
 
       try {
         const response = await axios.post('http://192.168.0.104:8000/api/createuser', {
-          name: name,
+          name: nome,
           email: email,
           password: password,
           is_gerente: is_gerente,
-          empresa_id: empresa_id
-        })
+          empresa_id: empresa_id,
+        }, {
+          headers: {
+            'Authorization': `Bearer ${token.value}`,
+            'Content-Type': 'application/json'
+          }
+        });
 
         const msg_sucess = document.getElementById('msg-sucess')
         if (response.status === 201) {
@@ -130,7 +135,8 @@ export default {
       } catch (error) {
         console.error(error, 'Servidor error');
       }
-    }
+    };
+
 
     const deleteColaborador = async (id) => {
       try {
@@ -246,10 +252,12 @@ export default {
   components: {
     BaraLateral,
     TemplateColaboradores,
+    ModalColaborador
   },
   data() {
     return {
-      colaboradores: []
+      colaboradores: [],
+      modalColaboradorVisivel: false,
     };
 
   },
@@ -286,7 +294,18 @@ export default {
     // "pipe" para o texto não ficar true e false
     getRole(isGerente) {
       return isGerente ? 'Gerente' : 'Funcionário';
-    }
+    },
+
+    // Método para abrir a janela modal de cadastro de produto
+    openModalColaborador() {
+      this.modalColaboradorVisivel = true;
+    },
+    // Método para lidar com o salvamento de produto
+    saveColaborador(colaboradorData) {
+      this.addColaborador(colaboradorData) // ao clicar, chama a função de salvar no bd
+      this.modalColaboradorVisivel = false;
+    },
+
 
   },
 };
