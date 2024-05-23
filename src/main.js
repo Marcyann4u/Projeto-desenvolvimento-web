@@ -18,5 +18,6 @@ const app = createApp(App);
 // Register Font Awesome component globally
 app.component('font-awesome-icon', FontAwesomeIcon);
 
+
 app.use(router);
 app.mount('#app');

@@ -13,7 +13,7 @@
             <div class="barra-lateral__content--links">
                 <ul>
                     <li>Armazém Fácil</li>
-                    <li>
+                    <li v-if="isGerente">
                         <routerLink to="/colaboradorespage">Colaboradores</routerLink>
                     </li>
                     <li>
@@ -103,6 +103,7 @@ import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateProdutos from '../reusable/TemplateProdutos.vue';
 import ModalProduto from '../reusable/ProdutosModal.vue'; 
 import ModalEditProduto from '../reusable/EditProdutoModal.vue';
+import { API_BASE_URL } from '@/config.js';
 
 export default {
     name: 'ForgotPassword',
@@ -121,7 +122,7 @@ export default {
             const { codigo, nome, categoria, descricao, preco, qtdunitaria } = produtoData;
 
             try {
-                const response = await axios.post(`http://192.168.0.104:8000/api/createiten/${id.value}`, {
+                const response = await axios.post(`${API_BASE_URL}/api/createiten/${id.value}`, {
                     codigo: codigo,
                     nome: nome,
                     categoria: categoria,
@@ -156,7 +157,7 @@ export default {
 
         const deleteProduto = async (id) => {
             try {
-                const response = await axios.delete(`http://192.168.0.104:8000/api/deleteiten/${id}`, {
+                const response = await axios.delete(`${API_BASE_URL}/api/deleteiten/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token.value}`,
                         'Content-Type': 'application/json'
@@ -208,7 +209,7 @@ export default {
             }
 
             try {
-                const response = await axios.put(`http://192.168.0.104:8000/api/editeiten/${produto_id}`, produto, {
+                const response = await axios.put(`${API_BASE_URL}/api/editeiten/${produto_id}`, produto, {
                     headers: {
                         'Authorization': `Bearer ${token.value}`,
                         'Content-Type': 'application/json'
@@ -243,7 +244,7 @@ export default {
 
         const verificarUsuario = async (id) => {
             try {
-                const response = await fetch(`http://192.168.0.104:8000/api/showoneuser/${id.value}`, {
+                const response = await fetch(`${API_BASE_URL}/api/showoneuser/${id.value}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token.value}`,
@@ -292,7 +293,7 @@ export default {
         empresa_id.value = localStorage.getItem('empresa_id');
         token.value = localStorage.getItem('token');
 
-        fetch(`http://192.168.0.104:8000/api/showitens`, {
+        fetch(`${API_BASE_URL}/api/showitens`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token.value}`,

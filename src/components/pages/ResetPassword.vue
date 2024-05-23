@@ -24,6 +24,7 @@ import BaseInput from '../reusable/BaseInput.vue';
 import Button from '../reusable/Button.vue'
 import TemplateRegister from '../reusable/TemplateRegister.vue'
 import axios from 'axios';
+import { API_BASE_URL } from '@/config.js';
 
 export default {
   name: 'ResetPassword',
@@ -48,7 +49,7 @@ export default {
       let colaborador = { password: password.value };
 
       try {
-        const response = await axios.put(`http://192.168.0.104:8000/api/edituser/${id.value}`, colaborador, {
+        const response = await axios.put(`${API_BASE_URL}/api/edituser/${id.value}`, colaborador, {
           headers: {
             'Authorization': `Bearer ${token.value}`,
             'Content-Type': 'application/json'

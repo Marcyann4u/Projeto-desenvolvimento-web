@@ -96,6 +96,7 @@ import BaraLateral from '../reusable/BaraLateral.vue';
 import TemplateColaboradores from '../reusable/TemplateProdutos.vue'
 import ModalColaborador from '../reusable/CadColaboradoresModal.vue'
 import ModalEditColaborador from '../reusable/EditColaboradorModal.vue'
+import { API_BASE_URL } from '@/config';
 
 export default {
   name: 'ForgotPassword',
@@ -115,7 +116,7 @@ export default {
       const { nome, email, password, is_gerente, empresa_id } = colaboradorData;
 
       try {
-        const response = await axios.post('http://192.168.0.104:8000/api/createuser', {
+        const response = await axios.post(`${API_BASE_URL}/api/createuser`, {
           name: nome,
           email: email,
           password: password,
@@ -145,7 +146,7 @@ export default {
 
     const deleteColaborador = async (id) => {
       try {
-        const response = await axios.delete(`http://192.168.0.104:8000/api/deleteuser/${id}`, {
+        const response = await axios.delete(`${API_BASE_URL}/api/deleteuser/${id}`, {
           headers: {
             'Authorization': `Bearer ${token.value}`,
             'Content-Type': 'application/json'
@@ -193,7 +194,7 @@ export default {
       }
 
       try {
-        const response = await axios.put(`http://192.168.0.104:8000/api/edituser/${colaborador_id}`, colaborador, {
+        const response = await axios.put(`${API_BASE_URL}/api/edituser/${colaborador_id}`, colaborador, {
           headers: {
             'Authorization': `Bearer ${token.value}`,
             'Content-Type': 'application/json'
@@ -227,7 +228,7 @@ export default {
 
     const verificarUsuario = async (id) => {
       try {
-        const response = await fetch(`http://192.168.0.104:8000/api/showoneuser/${id.value}`, {
+        const response = await fetch(`${API_BASE_URL}/api/showoneuser/${id.value}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token.value}`,
@@ -274,7 +275,7 @@ export default {
     empresa_id.value = localStorage.getItem('empresa_id');
     token.value = localStorage.getItem('token');
 
-    fetch(`http://192.168.0.104:8000/api/showoneempresaf/${empresa_id.value}`, {
+    fetch(`${API_BASE_URL}/api/showoneempresaf/${empresa_id.value}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token.value}`,

@@ -16,14 +16,7 @@
           <BaseInput class="input" type="password" v-model="password"></BaseInput>
         </div>
 
-        <div class="flex-row">
-          <label class="container">
-            <input type="checkbox">
-            <span class="checkmark"></span>
-            Lembre-se de mim
-          </label>
-          <a><router-link to="/forgotpassword">Esqueceu sua senha?</router-link></a>
-        </div>
+
         <Button intent="primary">Entrar</Button>
       </form>
     </div>
@@ -37,6 +30,7 @@ import BaseInput from '../reusable/BaseInput.vue';
 import Button from '../reusable/Button.vue';
 import TemplateRegister from '../reusable/TemplateRegister.vue';
 import Modal from '../reusable/Modal.vue';
+import { API_BASE_URL } from '@/config.js';
 // import { router } from '@/router';
 
 export default {
@@ -53,7 +47,7 @@ export default {
 
     const loginUser = async () => {
       try {
-        const response = await axios.post('http://192.168.0.104:8000/api/login', {
+        const response = await axios.post(`${API_BASE_URL}/api/login`, {
           email: firstName.value,
           password: password.value,
         });
@@ -132,6 +126,10 @@ p {
 h3 {
   margin-bottom: -1rem;
   font-weight: bold;
+}
+
+button{
+  margin-top: 10px;
 }
 
 .content {
